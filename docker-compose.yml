@@ -1,0 +1,15 @@
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "4321:4321"
+    volumes:
+      - .:/app
+    # stdin_open: true
+    # tty: true
+    # network_mode: "bridge"
+    # dns:
+    #   - 8.8.8.8
+    #   - 8.8.4.4
