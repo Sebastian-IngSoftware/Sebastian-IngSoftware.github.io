@@ -1,0 +1,30 @@
+@import "tailwindcss";
+@plugin "@tailwindcss/typography";
+@theme {
+    --color-primary: #0f2027;      /* Negro azulado muy oscuro */
+    --color-secondary: #1a4b3a;    /* Verde oscuro */
+    --color-tertiary: #2d5a3d;     /* Verde medio oscuro */
+    --color-accent: #40e0d0;       /* Verde agua/turquesa para acentos */
+    --color-success: #00ff87;      /* Verde brillante para éxitos */
+    --color-background: #0a0a0a;   /* Negro puro para fondo */
+    --color-surface: #1a1a1a;      /* Gris muy oscuro para tarjetas */
+    --color-text: #ffffff;         /* Blanco para texto */
+    --color-text-muted: #b3b3b3;   /* Gris claro para texto secundario */
+    --color-border: #2d5a3d;       /* Verde oscuro para bordes */
+}
+/* html {
+  scroll-padding-top: 34px; // para el scroll en el navbar que de un espaciado 
+}
+
+body {
+  font-weight: bolder;
+} */
+
+.container {
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.transition-global * {
+  transition: all 0.3s;
+}

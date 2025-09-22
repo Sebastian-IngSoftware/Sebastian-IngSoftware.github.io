@@ -1,0 +1,282 @@
+---
+import { skills } from "@/content/Skills";
+
+---
+
+<style>
+  .skill-details {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.3s ease, padding 0.3s ease;
+    padding: 0 1rem;
+  }
+  
+  .skill-details.expanded {
+    max-height: 500px;
+    padding: 1rem;
+  }
+  
+  .level-fill {
+    background: linear-gradient(90deg, var(--color-accent), var(--color-success));
+    transition: width 0.5s ease;
+  }
+</style>
+
+<!-- Skills Section -->
+<div class="bg-secondary p-6 rounded-xl border border-tertiary">
+  <!-- Header with filters -->
+  <div class="flex justify-between items-center mb-5 flex-wrap gap-3">
+    <h3 class="m-0 text-success text-2xl font-bold">Technical Skills</h3>
+    
+    <div class="flex gap-3 items-center flex-wrap">
+      <label class="text-text text-sm font-medium">Sort by:</label>
+      <select 
+        class="bg-surface text-text border border-border rounded-md px-3 py-2 text-sm cursor-pointer focus:outline-none focus:border-accent transition-colors" 
+        id="sortFilter" 
+        onchange="sortSkills(this.value)"
+      >
+        <option value="level">Level (High to Low)</option>
+        <option value="name">Name (A-Z)</option>
+      </select>
+      
+      <select 
+        class="bg-surface text-text border border-border rounded-md px-3 py-2 text-sm cursor-pointer focus:outline-none focus:border-accent transition-colors" 
+        id="categoryFilter" 
+        onchange="filterByCategory(this.value)"
+      >
+        <option value="all">All Categories</option>
+        <option value="frontend">Frontend</option>
+        <option value="backend">Backend</option>
+        <option value="devops">DevOps</option>
+        <option value="database">Database</option>
+        <option value="architecture">Architecture</option>
+        <option value="tools">Tools</option>
+        <option value="IA">AI/ML</option>
+        <option value="other">Other</option>
+      </select>
+    </div>
+  </div>
+  
+  <!-- Skills Grid -->
+  <div id="skillsContainer" class="grid grid-cols-[repeat(auto-fill,minmax(280px,1fr))] gap-3">
+    {skills.map((skill, index) => (
+      <div 
+        class="
+          bg-surface border border-border rounded-lg p-4 
+          transition-all duration-300 cursor-pointer
+          hover:-translate-y-0.5 hover:shadow-lg hover:shadow-accent/20
+        "
+        data-level={skill.level}
+        data-status={skill.status}
+        data-categories={skill.category.join(',')}
+        data-name={skill.skill}
+        onclick={`toggleSkill(${index})`}
+      >
+        <!-- Skill Header -->
+        <div class="flex items-center justify-between">
+          <div class="flex items-center gap-3">
+            <!-- Icon placeholder -->
+            <div class="
+              w-8 h-8 bg-tertiary rounded-md 
+              flex items-center justify-center 
+              text-accent font-bold text-xs
+            ">
+              {skill.icon.slice(0, 2).toUpperCase()}
+            </div>
+            <div>
+              <h4 class="m-0 text-text text-base font-semibold">{skill.skill}</h4>
+              <span class={`
+                inline-block px-2 py-0.5 rounded-xl text-xs mt-0.5
+                ${skill.status === 'learning' ? 'bg-tertiary text-text' : ''}
+                ${skill.status === 'proficient' ? 'bg-accent text-background' : ''}
+                ${skill.status === 'expert' ? 'bg-success text-background' : ''}
+              `}>
+                {skill.status}
+              </span>
+            </div>
+          </div>
+          <div class="text-text-muted text-xl" id={`arrow-${index}`}>
+            ▼
+          </div>
+        </div>
+        
+        <!-- Level Bar -->
+        <div class="w-full h-1.5 bg-tertiary rounded-full overflow-hidden my-2">
+          <div class="level-fill h-full" style={`width: ${skill.level * 10}%`}></div>
+        </div>
+        
+        <!-- Skill Details (Expandable) -->
+        <div class="skill-details" id={`details-${index}`}>
+          <div class="bg-primary p-3 rounded-md mb-3">
+            <p class="
+              m-0 text-text-muted leading-relaxed text-sm 
+              prose prose-sm prose-invert max-w-none
+              prose-p:text-text-muted prose-p:leading-relaxed
+            ">
+              {skill.description}
+            </p>
+          </div>
+          
+          <div class="mb-2">
+            <strong class="text-accent text-sm font-semibold">Level:</strong>
+            <span class="text-text ml-2 text-sm">{skill.level}/10</span>
+          </div>
+          
+          <div>
+            <strong class="text-accent text-sm font-semibold">Categories:</strong>
+            <div class="mt-1 flex flex-wrap gap-1">
+              {skill.category.map((cat) => (
+                <span class="
+                  inline-block px-2 py-0.5 bg-tertiary text-text 
+                  rounded-xl text-xs
+                ">
+                  {cat}
+                </span>
+              ))}
+            </div>
+          </div>
+        </div>
+      </div>
+    ))}
+  </div>
+</div>
+
+<script>
+  function toggleSkill(index: number) {
+    const details = document.getElementById(`details-${index}`);
+    const arrow = document.getElementById(`arrow-${index}`);
+    
+    if (details && arrow) {
+      if (details.classList.contains('expanded')) {
+        details.classList.remove('expanded');
+        arrow.textContent = '▼';
+      } else {
+        details.classList.add('expanded');
+        arrow.textContent = '▲';
+      }
+    }
+  }
+
+  function sortSkills(sortBy: string) {
+    const container = document.getElementById('skillsContainer');
+    if (!container) return;
+
+    const skillItems = Array.from(container.children) as HTMLElement[];
+    
+    skillItems.sort((a, b) => {
+      switch (sortBy) {
+        case 'level':
+          return parseInt(b.dataset.level || '0') - parseInt(a.dataset.level || '0');
+        case 'status':
+          const statusOrder = { 'expert': 3, 'proficient': 2, 'learning': 1 };
+          const statusA = a.dataset.status as keyof typeof statusOrder;
+          const statusB = b.dataset.status as keyof typeof statusOrder;
+          return (statusOrder[statusB] || 0) - (statusOrder[statusA] || 0);
+        case 'name':
+          return (a.dataset.name || '').localeCompare(b.dataset.name || '');
+        case 'category':
+          const catA = (a.dataset.categories || '').split(',')[0];
+          const catB = (b.dataset.categories || '').split(',')[0];
+          return catA.localeCompare(catB);
+        default:
+          return 0;
+      }
+    });
+
+    skillItems.forEach(item => container.appendChild(item));
+  }
+
+  function filterByCategory(category: string) {
+    const container = document.getElementById('skillsContainer');
+    if (!container) return;
+
+    const skillItems = Array.from(container.children) as HTMLElement[];
+    
+    skillItems.forEach(item => {
+      const categories = item.dataset.categories || '';
+      if (category === 'all' || categories.includes(category)) {
+        item.style.display = 'block';
+      } else {
+        item.style.display = 'none';
+      }
+    });
+  }
+
+  (window as any).toggleSkill = toggleSkill;
+  (window as any).sortSkills = sortSkills;
+  (window as any).filterByCategory = filterByCategory;
+
+  document.addEventListener('DOMContentLoaded', () => {
+    sortSkills('level');
+  });
+</script>
+
+<script>
+  function toggleSkill(index: number) {
+    const details = document.getElementById(`details-${index}`);
+    const arrow = document.getElementById(`arrow-${index}`);
+    
+    if (details && arrow) {
+      if (details.classList.contains('expanded')) {
+        details.classList.remove('expanded');
+        arrow.textContent = '▼';
+      } else {
+        details.classList.add('expanded');
+        arrow.textContent = '▲';
+      }
+    }
+  }
+
+  function sortSkills(sortBy: string) {
+    const container = document.getElementById('skillsContainer');
+    if (!container) return;
+
+    const skillItems = Array.from(container.children) as HTMLElement[];
+    
+    skillItems.sort((a, b) => {
+      switch (sortBy) {
+        case 'level':
+          return parseInt(b.dataset.level || '0') - parseInt(a.dataset.level || '0');
+        case 'status':
+          const statusOrder = { 'expert': 3, 'proficient': 2, 'learning': 1 };
+          const statusA = a.dataset.status as keyof typeof statusOrder;
+          const statusB = b.dataset.status as keyof typeof statusOrder;
+          return (statusOrder[statusB] || 0) - (statusOrder[statusA] || 0);
+        case 'name':
+          return (a.dataset.name || '').localeCompare(b.dataset.name || '');
+        case 'category':
+          const catA = (a.dataset.categories || '').split(',')[0];
+          const catB = (b.dataset.categories || '').split(',')[0];
+          return catA.localeCompare(catB);
+        default:
+          return 0;
+      }
+    });
+
+    skillItems.forEach(item => container.appendChild(item));
+  }
+
+  function filterByCategory(category: string) {
+    const container = document.getElementById('skillsContainer');
+    if (!container) return;
+
+    const skillItems = Array.from(container.children) as HTMLElement[];
+    
+    skillItems.forEach(item => {
+      const categories = item.dataset.categories || '';
+      if (category === 'all' || categories.includes(category)) {
+        item.style.display = 'block';
+      } else {
+        item.style.display = 'none';
+      }
+    });
+  }
+
+  (window as any).toggleSkill = toggleSkill;
+  (window as any).sortSkills = sortSkills;
+  (window as any).filterByCategory = filterByCategory;
+
+  document.addEventListener('DOMContentLoaded', () => {
+    sortSkills('level');
+  });
+</script>

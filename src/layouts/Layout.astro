@@ -1,0 +1,55 @@
+---
+import CV from '@public/Sebastian_Sarmiento_CV.pdf'
+---
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width" />
+    <meta name="generator" content={Astro.generator} />
+    <title>Sebastian-IngSoftware</title>
+    <link rel="stylesheet" href="/src/styles/global.css" />
+  </head>
+  <body class="bg-background text-text m-0 p-5 font-sans">
+    <!-- Hero Section -->
+    <header class="bg-gradient-to-br from-primary to-secondary p-10 rounded-xl mb-5 border border-border">
+      <div class="flex justify-between items-center flex-wrap gap-4">
+        <div>
+          <h1 class="m-0 text-4xl text-text font-bold">
+            Sebastian Sarmiento
+          </h1>
+          <p class="mt-2 mb-0 text-xl text-accent">
+            Software Engineer
+          </p>
+        </div>
+        
+        <!-- CV Download Button -->
+        <a 
+          href="/Sebastian Sarmiento CV.pdf" 
+          target="_blank"
+          class="
+            bg-accent text-background 
+            px-6 py-3 rounded-lg 
+            no-underline font-bold 
+            transition-all duration-300
+            border-2 border-accent
+            flex items-center gap-2
+            hover:bg-transparent hover:text-accent
+          "
+        >
+          <span>📄</span>
+          Download CV
+        </a>
+      </div>
+    </header>
+
+    <!-- Main content from pages -->
+    <slot />
+
+    <!-- Footer Status -->
+    <div class="bg-surface p-4 rounded-lg border-l-4 border-l-success flex items-center gap-3 mt-5">
+      <div class="w-2 h-2 bg-success rounded-full"></div>
+      <span class="text-text">Available for new opportunities</span>
+    </div>
+  </body>
+</html>
