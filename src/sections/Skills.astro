@@ -22,13 +22,11 @@ import { skills } from "@/content/Skills";
   }
 </style>
 
-<!-- Skills Section -->
 <div class="bg-secondary p-6 rounded-xl border border-tertiary">
-  <!-- Header with filters -->
-  <div class="flex justify-between items-center mb-5 flex-wrap gap-3">
-    <h3 class="m-0 text-success text-2xl font-bold">Technical Skills</h3>
+  <div class="flex flex-col sm:flex-row sm:justify-between sm:items-center mb-5 gap-3">
+    <h3 class="m-0 text-success text-xl sm:text-2xl font-bold">Technical Skills</h3>
     
-    <div class="flex gap-3 items-center flex-wrap">
+    <div class="flex flex-col sm:flex-row gap-2 sm:gap-3 items-start sm:items-center">
       <label class="text-text text-sm font-medium">Sort by:</label>
       <select 
         class="bg-surface text-text border border-border rounded-md px-3 py-2 text-sm cursor-pointer focus:outline-none focus:border-accent transition-colors" 
@@ -58,7 +56,7 @@ import { skills } from "@/content/Skills";
   </div>
   
   <!-- Skills Grid -->
-  <div id="skillsContainer" class="grid grid-cols-[repeat(auto-fill,minmax(280px,1fr))] gap-3">
+  <div id="skillsContainer" class="grid grid-cols-1 sm:grid-cols-[repeat(auto-fill,minmax(280px,1fr))] gap-3">
     {skills.map((skill, index) => (
       <div 
         class="
@@ -74,17 +72,17 @@ import { skills } from "@/content/Skills";
       >
         <!-- Skill Header -->
         <div class="flex items-center justify-between">
-          <div class="flex items-center gap-3">
+          <div class="flex items-center gap-2 sm:gap-3 min-w-0 flex-1">
             <!-- Icon placeholder -->
             <div class="
-              w-8 h-8 bg-tertiary rounded-md 
+              w-6 h-6 sm:w-8 sm:h-8 bg-tertiary rounded-md 
               flex items-center justify-center 
-              text-accent font-bold text-xs
+              text-accent font-bold text-xs shrink-0
             ">
               {skill.icon.slice(0, 2).toUpperCase()}
             </div>
-            <div>
-              <h4 class="m-0 text-text text-base font-semibold">{skill.skill}</h4>
+            <div class="min-w-0 flex-1">
+              <h4 class="m-0 text-text text-sm sm:text-base font-semibold truncate">{skill.skill}</h4>
               <span class={`
                 inline-block px-2 py-0.5 rounded-xl text-xs mt-0.5
                 ${skill.status === 'learning' ? 'bg-tertiary text-text' : ''}
@@ -140,76 +138,6 @@ import { skills } from "@/content/Skills";
     ))}
   </div>
 </div>
-
-<script>
-  function toggleSkill(index: number) {
-    const details = document.getElementById(`details-${index}`);
-    const arrow = document.getElementById(`arrow-${index}`);
-    
-    if (details && arrow) {
-      if (details.classList.contains('expanded')) {
-        details.classList.remove('expanded');
-        arrow.textContent = '▼';
-      } else {
-        details.classList.add('expanded');
-        arrow.textContent = '▲';
-      }
-    }
-  }
-
-  function sortSkills(sortBy: string) {
-    const container = document.getElementById('skillsContainer');
-    if (!container) return;
-
-    const skillItems = Array.from(container.children) as HTMLElement[];
-    
-    skillItems.sort((a, b) => {
-      switch (sortBy) {
-        case 'level':
-          return parseInt(b.dataset.level || '0') - parseInt(a.dataset.level || '0');
-        case 'status':
-          const statusOrder = { 'expert': 3, 'proficient': 2, 'learning': 1 };
-          const statusA = a.dataset.status as keyof typeof statusOrder;
-          const statusB = b.dataset.status as keyof typeof statusOrder;
-          return (statusOrder[statusB] || 0) - (statusOrder[statusA] || 0);
-        case 'name':
-          return (a.dataset.name || '').localeCompare(b.dataset.name || '');
-        case 'category':
-          const catA = (a.dataset.categories || '').split(',')[0];
-          const catB = (b.dataset.categories || '').split(',')[0];
-          return catA.localeCompare(catB);
-        default:
-          return 0;
-      }
-    });
-
-    skillItems.forEach(item => container.appendChild(item));
-  }
-
-  function filterByCategory(category: string) {
-    const container = document.getElementById('skillsContainer');
-    if (!container) return;
-
-    const skillItems = Array.from(container.children) as HTMLElement[];
-    
-    skillItems.forEach(item => {
-      const categories = item.dataset.categories || '';
-      if (category === 'all' || categories.includes(category)) {
-        item.style.display = 'block';
-      } else {
-        item.style.display = 'none';
-      }
-    });
-  }
-
-  (window as any).toggleSkill = toggleSkill;
-  (window as any).sortSkills = sortSkills;
-  (window as any).filterByCategory = filterByCategory;
-
-  document.addEventListener('DOMContentLoaded', () => {
-    sortSkills('level');
-  });
-</script>
 
 <script>
   function toggleSkill(index: number) {
