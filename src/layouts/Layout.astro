@@ -22,8 +22,10 @@ const isActive = (href: any) => {
     <title>Sebastian-IngSoftware</title>
     <link rel="stylesheet" href="/src/styles/global.css" />
   </head>
-  <body class="bg-background text-text m-0 p-5 font-sans">
-    <header class="bg-gradient-to-br from-primary to-secondary p-4 sm:p-8 rounded-xl mb-5 border border-border">
+  <body class="bg-background text-text m-0 p-5 font-sans container">
+    <header class="sticky top-0 z-50 bg-black">
+      <div class="bg-gradient-to-br from-primary to-secondary p-4 sm:p-8 rounded-xl mb-5 border border-border">
+
       <div class="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-2">
 
         
@@ -32,7 +34,6 @@ const isActive = (href: any) => {
             <p class="mt-1 sm:mt-2 mb-0 text-lg sm:text-xl text-accent">Software Engineer</p>
 
             <div class="mt-2 flex flex-col lg:flex-row items-center sm:items-start gap-2 lg:gap-4 w-full justify-center lg:justify-start">
-              <!-- Left group: Email + Phone (stacked on mobile, inline on lg) -->
               <div class="w-full lg:w-auto flex flex-col sm:flex-row sm:items-center sm:gap-3 gap-1 lg:gap-4 justify-center lg:justify-start">
                 <a aria-label="Email: sebastiansarmientocas@gmail.com" href="mailto:sebastiansarmientocas@gmail.com" class="inline-flex items-center gap-2 text-text-muted hover:text-accent transition text-sm min-w-0 justify-center sm:justify-start w-full sm:w-auto">
                   <svg class="hidden sm:inline-block w-4 h-4 shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
@@ -47,7 +48,6 @@ const isActive = (href: any) => {
                 </a>
               </div>
 
-              <!-- Right group: LinkedIn + GitHub (icons together) -->
               <div class="w-full lg:w-auto flex items-center justify-center lg:justify-start gap-3">
                 <a aria-label="LinkedIn: Sebastian Sarmiento" href="https://www.linkedin.com/in/sebastian-sarmiento-4a3b64204" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-2 text-text-muted hover:text-accent transition text-sm">
                   <svg class="w-4 h-4" viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg"><path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.761 0 5-2.239 5-5v-14c0-2.761-2.239-5-5-5zm-11 19h-3v-10h3v10zm-1.5-11.268c-.966 0-1.75-.784-1.75-1.75s.784-1.75 1.75-1.75 1.75.784 1.75 1.75-.784 1.75-1.75 1.75zm13.5 11.268h-3v-5.604c0-1.337-.026-3.063-1.867-3.063-1.868 0-2.154 1.459-2.154 2.967v5.7h-3v-10h2.881v1.367h.041c.401-.761 1.381-1.563 2.843-1.563 3.041 0 3.604 2.003 3.604 4.605v5.591z"/></svg>
@@ -74,29 +74,30 @@ const isActive = (href: any) => {
             </a>
           </div>
       </div>
-    </header>
-
-    <nav class="flex w-full text-center border-b border-border mb-10">
-      <a
+      </div>
+      
+      <nav class="flex w-full text-center border-b border-border mb-10">
+        <a
         href="/"
         class={`w-1/2 py-3 text-lg font-semibold transition-all duration-200 flex items-center justify-center
           ${isActive('/') 
-            ? 'bg-accent text-background border-b-4 border-accent' 
-            : 'text-text-muted hover:bg-accent hover:text-background'}`}
+          ? 'bg-accent text-background border-b-4 border-accent' 
+          : 'text-text-muted hover:bg-accent hover:text-background'}`}
       >
-        Skills
-      </a>
-
-      <a
-        href="/projects"
-        class={`w-1/2 py-3 text-lg font-semibold transition-all duration-200 flex items-center justify-center
+      Skills
+    </a>
+    
+    <a
+    href="/projects"
+    class={`w-1/2 py-3 text-lg font-semibold transition-all duration-200 flex items-center justify-center
           ${isActive('/projects')
-            ? 'bg-accent text-background border-b-4 border-accent'
-            : 'text-text-muted hover:bg-accent hover:text-background'}`}
+          ? 'bg-accent text-background border-b-4 border-accent'
+          : 'text-text-muted hover:bg-accent hover:text-background'}`}
       >
-        Projects
-      </a>
-    </nav>
+      Projects
+    </a>
+  </nav>
+</header>
 
     <slot />
 

@@ -172,7 +172,7 @@ const otherSkills = skills.filter(s => !mainSkillIcons.includes(s.icon));
 </div>
 
 <script>
-  function toggleSkill(index) {
+  function toggleSkill(index: number) {
     const details = document.getElementById(`details-${index}`);
     const arrow = document.getElementById(`arrow-${index}`);
     const card = document.getElementById(`card-${index}`);
@@ -190,18 +190,18 @@ const otherSkills = skills.filter(s => !mainSkillIcons.includes(s.icon));
     }
   }
 
-  function sortSkills(sortBy) {
+  function sortSkills(sortBy: 'level' | 'name') {
     const container = document.getElementById('skillsContainer');
     if (!container) return;
 
-    const skillItems = Array.from(container.children);
+    const skillItems = Array.from(container.children) as HTMLElement[];
     
     skillItems.sort((a, b) => {
       switch (sortBy) {
         case 'level':
-          return parseInt(b.dataset.level || '0') - parseInt(a.dataset.level || '0');
+          return parseInt((b as HTMLElement).dataset.level || '0') - parseInt((a as HTMLElement).dataset.level || '0');
         case 'name':
-          return (a.dataset.name || '').localeCompare(b.dataset.name || '');
+          return ((a as HTMLElement).dataset.name || '').localeCompare((b as HTMLElement).dataset.name || '');
         default:
           return 0;
       }
@@ -210,20 +210,20 @@ const otherSkills = skills.filter(s => !mainSkillIcons.includes(s.icon));
     skillItems.forEach(item => container.appendChild(item));
   }
 
-  function filterByCategory(category) {
+  function filterByCategory(category: string) {
     const container = document.getElementById('skillsContainer');
     if (!container) return;
 
     const skillItems = Array.from(container.children);
     skillItems.forEach(item => {
-      const categories = item.dataset.categories || '';
-      item.style.display = category === 'all' || categories.includes(category) ? 'block' : 'none';
+      const categories = (item as HTMLElement).dataset.categories || '';
+      (item as HTMLElement).style.display = category === 'all' || categories.includes(category) ? 'block' : 'none';
     });
   }
 
-  (window).toggleSkill = toggleSkill;
-  (window).sortSkills = sortSkills;
-  (window).filterByCategory = filterByCategory;
+  (window as any).toggleSkill = toggleSkill;
+  (window as any).sortSkills = sortSkills;
+  (window as any).filterByCategory = filterByCategory;
 
   document.addEventListener('DOMContentLoaded', () => {
     sortSkills('level');
