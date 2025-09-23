@@ -217,7 +217,7 @@ const otherSkills = skills.filter(s => !mainSkillIcons.includes(s.icon));
     const skillItems = Array.from(container.children);
     skillItems.forEach(item => {
       const categories = (item as HTMLElement).dataset.categories || '';
-      (item as HTMLElement).style.display = category === 'all' || categories.includes(category) ? 'block' : 'none';
+      (item as HTMLElement).style.display = category === 'all' || categories.includes(category) ? '' : 'none';
     });
   }
 
