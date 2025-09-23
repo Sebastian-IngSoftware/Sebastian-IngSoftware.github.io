@@ -1,0 +1,80 @@
+---
+import Layout from "@/layouts/Layout.astro";
+import { projects } from "@/content/Projects";
+import { skills } from "@/content/Skills";
+
+// Función auxiliar para mapear tags → skills
+const getProjectSkills = (tags: any) => {
+  if (!tags) return [];
+  const tagsArray = Array.isArray(tags) ? tags : [tags];
+  return skills.filter((s) => tagsArray.includes(s.skill));
+};
+
+// Función para agrupar categorías únicas
+const getUniqueCategories = (projectSkills: any[]) => {
+  const allCategories = projectSkills.flatMap((s) => s.category);
+  return [...new Set(allCategories)];
+};
+---
+
+<Layout>
+  <section class="text py-16">
+    <div class="max-w-6xl mx-auto px-6 space-y-24">
+      <header class="text-center">
+        <h1 class="text-4xl md:text-5xl font-bold">My Core Projects</h1>
+        <p class="text-text-muted mt-4 max-w-2xl mx-auto">
+          This is some of my core projects, where I apply all my skills. I have more projects, but these are the most relevant ones.
+        </p>
+      </header>
+
+      {projects.map((project, index) => {
+        const projectSkills = getProjectSkills(project.tags);
+        const categories = getUniqueCategories(projectSkills);
+
+        return (
+          <div
+            class={`flex flex-col md:flex-row items-center gap-8 ${
+              index % 2 === 0 ? "md:flex-row" : "md:flex-row-reverse"
+            }`}
+          >
+            <div class="flex-1 grid grid-cols-3 sm:grid-cols-4 md:grid-cols-5 gap-6">
+              {projectSkills.length > 0 ? (
+                projectSkills.map((skill) => (
+                  <div class="w-20 h-20 flex items-center justify-center bg-white rounded-xl shadow-lg border border-border">
+                    <img
+                      src={`/svgs/${skill.icon}.svg`}
+                      alt={skill.skill + " icon"}
+                      class="w-12 h-12 object-contain"
+                      loading="lazy"
+                    />
+                  </div>
+                ))
+              ) : (
+                <div class="w-full h-40 flex items-center justify-center text-text-muted border border-border rounded-xl bg-surface">
+                  Sin skills asociadas
+                </div>
+              )}
+            </div>
+
+            <div class="flex-1">
+              <h2 class="text-2xl md:text-3xl font-semibold text-success">
+                {project.title}
+              </h2>
+              <p class="mt-3 text-text-muted leading-relaxed">
+                {project.description}
+              </p>
+
+              <div class="mt-4 flex flex-wrap gap-2">
+                {categories.map((cat) => (
+                  <span class="px-3 py-1 text-sm rounded-full bg-tertiary shadow text-text">
+                    {cat}
+                  </span>
+                ))}
+              </div>
+            </div>
+          </div>
+        );
+      })}
+    </div>
+  </section>
+</Layout>

@@ -1,5 +1,17 @@
 ---
 import CV from '@public/Sebastian_Sarmiento_CV.pdf'
+import "../styles/global.css";
+
+// obtener ruta actual de forma segura en el frontmatter
+const currentPath = typeof Astro?.request !== "undefined"
+  ? new URL(Astro.request.url).pathname
+  : "/";
+
+// helper para marcar activo (exacto o startsWith para /projects)
+const isActive = (href: any) => {
+  if (href === "/") return currentPath === "/";
+  return currentPath.startsWith(href);
+};
 ---
 
 <html lang="en">
@@ -63,6 +75,28 @@ import CV from '@public/Sebastian_Sarmiento_CV.pdf'
           </div>
       </div>
     </header>
+
+    <nav class="flex w-full text-center border-b border-border mb-10">
+      <a
+        href="/"
+        class={`w-1/2 py-3 text-lg font-semibold transition-all duration-200 flex items-center justify-center
+          ${isActive('/') 
+            ? 'bg-accent text-background border-b-4 border-accent' 
+            : 'text-text-muted hover:bg-accent hover:text-background'}`}
+      >
+        Skills
+      </a>
+
+      <a
+        href="/projects"
+        class={`w-1/2 py-3 text-lg font-semibold transition-all duration-200 flex items-center justify-center
+          ${isActive('/projects')
+            ? 'bg-accent text-background border-b-4 border-accent'
+            : 'text-text-muted hover:bg-accent hover:text-background'}`}
+      >
+        Projects
+      </a>
+    </nav>
 
     <slot />
 

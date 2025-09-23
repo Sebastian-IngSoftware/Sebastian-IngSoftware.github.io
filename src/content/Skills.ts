@@ -7,7 +7,7 @@ export interface Skills {
     icon: string;
 }
 
-export const skills: Skills[] =[
+export const skills = [
     {
         skill: 'TypeScript',
         level: 6,
@@ -67,7 +67,7 @@ export const skills: Skills[] =[
     {
         skill: 'Astro',
         level: 6,
-        description: 'I have been using Astro for some time and have sufficient knowledge to create static websites with it. I like the framework, especially because it\'s a static site generator, since I enjoy creating static websites for their speed and security. This is the only skill I\'ve worked with in a public project - this website is made with Astro. I also built gruporisar.com for a client using Astro and TailwindCSS.',
+        description: 'I have been using Astro for some time and have sufficient knowledge to create static websites with it. I like the framework, especially because it\'s a static site generator, since I enjoy creating static websites for their speed and security. This is the only skill I\'ve worked with in a public project - this website is made with Astro.',
         status: 'proficient',
         category: ['frontend'],
         icon: 'astro'
@@ -155,7 +155,7 @@ export const skills: Skills[] =[
     {
         skill: 'VPS Management',
         level: 7,
-        description: 'I have experience managing VPS servers using services like Hostinger and Yachay. For me, it\'s easier than using shared hosting. The only drawback is the cost, but I think it\'s worth it for the benefits it provides. I know other services like Vercel, Netlify, or Laravel Cloud, but I prefer VPS for private projects where users are limited to an enterprise or organization because the security is stricter and I have more control over the server than with public projects.',
+        description: 'I have experience managing VPS servers using services like Hostinger and Yachay. For me, it\'s easier than using shared hosting. The only drawback is the cost, but I think it\'s worth it for the benefits it provides. I know other services like Vercel, Netlify, or Laravel Cloud, but I prefer VPS for private projects.',
         status: 'proficient',
         category: ['devops', 'tools'],
         icon: 'vps'
@@ -240,4 +240,4 @@ export const skills: Skills[] =[
         category: ['backend'],
         icon: 'springboot'
     }
-];
+] as const;
