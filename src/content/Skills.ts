@@ -73,7 +73,7 @@ export const skills: Skills[] =[
         icon: 'astro'
     },
     {
-        skill: 'TailwindCSS',
+        skill: 'Tailwind',
         level: 6,
         description: 'I have been using TailwindCSS for some time. I like this library because it\'s very customizable and makes styling frontend components easier and faster.',
         status: 'proficient',
