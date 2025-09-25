@@ -19,7 +19,7 @@ export const skills = [
     {
         skill: 'Python',
         level: 5,
-        description: 'I use Python for data analysis in real projects, scripts with Flask/FastAPI and sklearn libraries. I plan to learn more for data science and machine learning.',
+        description: 'I use Python for data analysis in real projects and create scripts with Flask or FastAPI to leverage libraries like sklearn. I enjoy the clean syntax and vast ecosystem of libraries. Currently expanding my knowledge in data science and machine learning.',
         status: 'learning',
         category: ['backend', 'IA'],
         icon: 'python'
@@ -27,7 +27,7 @@ export const skills = [
     {
         skill: 'Laravel',
         level: 9,
-        description: 'Extensive experience using Laravel for personal and professional projects daily. Excellent comprehensive framework for web development - one of the best for backend.',
+        description: 'Years of experience using Laravel for personal and professional projects daily. It\'s my go-to framework for PHP web development due to its comprehensive feature set that accelerates development. While not the strongest on frontend, it excels for backend architecture.',
         status: 'expert',
         category: ['backend', 'database','frontend', 'architecture'],
         icon: 'laravel'
@@ -35,7 +35,7 @@ export const skills = [
     {
         skill: 'Tests',
         level: 9,
-        description: 'Testing is essential for software development. Experience with unit and integration tests. Well-written tests ensure code quality and make maintenance easier.',
+        description: 'I consider testing an essential part of software development. I have experience writing unit and integration tests, as well as setting up test environments. I believe that well-written tests help ensure code quality and reliability, making maintenance and future development easier.',
         status: 'expert',
         category: ['backend', 'frontend','devops','database','tools'],
         icon: 'tests'
@@ -43,7 +43,7 @@ export const skills = [
     {
         skill: 'PHP',
         level: 9,
-        description: 'Many years of experience with extensive knowledge. Used for many personal and real projects with deep understanding of the language.',
+        description: 'I have been using PHP for many years and have extensive experience with it. I have used it for many personal and real projects, and I have deep knowledge of the language. I like PHP and think it\'s a good choice for web development.',
         status: 'expert',
         category: ['backend', 'database','frontend'],
         icon: 'php'
@@ -51,7 +51,7 @@ export const skills = [
     {
         skill: 'Kanban',
         level: 9,
-        description: 'I use Kanban for all projects - excellent for organizing tasks and work. Did scientific research about it for my final degree project.',
+        description: 'I use Kanban for all my projects and find it excellent for organizing tasks and workflow. My interest began during university while learning agile methodologies, and I later conducted scientific research on it for my final degree project.',
         status: 'expert',
         category: ['tools'],
         icon: 'kanban'
@@ -59,7 +59,7 @@ export const skills = [
     {
         skill: 'Docker',
         level: 5,
-        description: 'Use Docker for all projects to isolate dependencies and maintain consistent environments. Very useful for development, though still learning advanced features.',
+        description: 'I use Docker across all projects because containers provide excellent dependency isolation and consistent environments. My laptop runs all personal and work projects in Docker, which streamlines development workflows significantly.',
         status: 'learning',
         category: ['devops'],
         icon: 'docker'
@@ -75,7 +75,7 @@ export const skills = [
     {
         skill: 'Astro',
         level: 6,
-        description: 'Sufficient knowledge to create static websites. I like it for speed and security. This website is made with Astro - my only public project skill showcase.',
+        description: 'I have sufficient knowledge to create static websites with Astro. I appreciate it as a static site generator because I value the speed and security of static sites. This website itself is built with Astro - my only public project showcase.',
         status: 'proficient',
         category: ['frontend'],
         icon: 'astro'
@@ -91,7 +91,7 @@ export const skills = [
     {
         skill: 'Bootstrap',
         level: 8,
-        description: 'First CSS framework I learned. Still very useful for quick projects. I prefer Tailwind now, but have extensive experience with Bootstrap.',
+        description: 'This is the first CSS framework I learned. While it may be considered outdated in the frontend world, it\'s still very useful for quick projects. Personally, I prefer Tailwind since I learned it, but I have extensive experience with Bootstrap and I like it.',
         status: 'expert',
         category: ['frontend'],
         icon: 'bootstrap'
@@ -115,7 +115,7 @@ export const skills = [
     {
         skill: 'MVC Architecture',
         level: 9,
-        description: 'Very useful architecture for organizing code and projects. First architecture I learned - basic but essential for understanding software architecture concepts.',
+        description: 'I like this architecture because it\'s very useful for organizing code and projects. This is the first architecture I learned - it\'s basic but very useful for understanding software architecture concepts.',
         status: 'expert',
         category: ['architecture'],
         icon: 'mvc'
@@ -139,7 +139,7 @@ export const skills = [
     {
         skill: 'Modular Architecture',
         level: 8,
-        description: 'Used in personal and work projects. Very useful for organizing code and projects, and easier to implement than microservices architecture.',
+        description: 'I\'ve applied Modular Architecture concepts in personal projects and professional work. I appreciate this approach for code organization as it\'s more practical to implement than microservices while still providing good structure.',
         status: 'expert',
         category: ['architecture'],
         icon: 'modular-monolith'
@@ -147,7 +147,7 @@ export const skills = [
     {
         skill:'Monolith Architecture',
         level: 9,
-        description: 'Extensive experience with monolith architecture for personal and work projects. Important to create good architecture with solid conventions and practices.',
+        description: 'Extensive experience with monolith architecture from numerous personal and professional projects. The key is building well-structured monoliths with solid conventions and practices to prevent future architectural issues.',
         status: 'expert',
         category: ['architecture'],
         icon: 'monolith'
@@ -155,7 +155,7 @@ export const skills = [
     {
         skill: 'Cloud VPS',
         level: 6,
-        description: 'Experience managing VPS servers with Hostinger and Yachay. Easier than shared hosting despite higher cost. I prefer VPS for private projects.',
+        description: 'Experience managing VPS servers through Hostinger and Yachay. I find VPS more manageable than shared hosting despite higher costs. While familiar with Vercel and Netlify, I prefer VPS control for private projects.',
         status: 'proficient',
         category: ['devops', 'tools'],
         icon: 'vps'
@@ -163,7 +163,7 @@ export const skills = [
     {
         skill: 'Intranet Management',
         level: 8,
-        description: 'Experience managing and deploying intranet systems. Understand security, access control, and internal communication requirements for organizations.',
+        description: 'Experience deploying and managing corporate intranet systems. I understand the unique challenges including security protocols, access control, and internal communication needs. Successfully implemented solutions that enhanced organizational collaboration.',
         status: 'expert',
         category: ['devops'],
         icon: 'intranet'
@@ -171,7 +171,7 @@ export const skills = [
     {
         skill: 'FastAPI',
         level: 4,
-        description: 'Used for personal projects. Great automatic documentation and performance. Building a public framework with it on GitHub - excellent for Python ML libraries.',
+        description: 'Used FastAPI for personal projects and appreciate its automatic documentation and performance. It\'s excellent for Python APIs, especially when leveraging ML libraries like sklearn. Currently building a public framework with it on GitHub.',
         status: 'learning',
         category: ['backend', 'IA'],
         icon: 'fastapi'
@@ -179,7 +179,7 @@ export const skills = [
     {
         skill: 'Machine Learning',
         level: 4,
-        description: 'Learned basics using sklearn and pandas for personal and master\'s projects. Interested in learning more - I think it\'s the future of technology.',
+        description: 'Learned ML fundamentals using sklearn and pandas for personal projects and master\'s coursework. I\'m genuinely interested in this field and believe it represents the future of technology development.',
         status: 'learning',
         category: ['IA'],
         icon: 'machine-learning'
@@ -195,7 +195,7 @@ export const skills = [
     {
         skill: 'Vue',
         level: 7,
-        description: 'Easy to learn and very flexible framework. Used for real work projects. For creating components and interactive elements, it\'s easier than Angular.',
+        description: 'I find Vue intuitive to learn and highly flexible for development. Used it in professional work projects, and I particularly appreciate how it simplifies component creation compared to frameworks like Angular.',
         status: 'proficient',
         category: ['frontend'],
         icon: 'vue'
@@ -203,7 +203,7 @@ export const skills = [
     {
         skill: 'React',
         level: 5,
-        description: 'Popular framework with large community. Used for personal projects but need to improve knowledge and experience. Its popularity sparked my interest.',
+        description: 'React\'s popularity motivated me to learn it, and I\'ve used it for personal projects. While I need to deepen my knowledge and experience, I appreciate the framework\'s strong community and ecosystem.',
         status: 'learning',
         category: ['frontend'],
         icon: 'react'
@@ -211,7 +211,7 @@ export const skills = [
     {
         skill: 'NextJS',
         level: 4,
-        description: 'More robust React framework with great integrations. I prefer using it for frontend and basic backend functionalities.',
+        description: 'I appreciate Next.js for its React integrations and robust frontend capabilities. While it supports backend functionality, I prefer using it primarily for frontend development and basic backend features.',
         status: 'learning',
         category: ['frontend'],
         icon: 'nextjs'
@@ -227,7 +227,7 @@ export const skills = [
     {
         skill: 'Vite',
         level: 5,
-        description: 'Very fast build tool for compiling code. I prefer it over Webpack. Used for personal and real projects - love the speed and simplicity for JavaScript.',
+        description: 'Vite is a build tool that\'s very fast for compiling code. I prefer it over other tools like Webpack. I have used it for personal and real projects, and I like the speed and simplicity it offers for JavaScript projects.',
         status: 'proficient',
         category: ['frontend', 'tools'],
         icon: 'vite'
@@ -235,7 +235,7 @@ export const skills = [
     {
         skill: 'Java',
         level: 3,
-        description: 'Learned at university for understanding OOP and data structures. Only used for academic projects, but might revisit for its code organization structure.',
+        description: 'Learned Java at university where it helped me grasp fundamental programming concepts like OOP and data structures. Only used for academic work, but I might return to it since its organizational structure appeals to me.',
         status: 'learning',
         category: ['backend'],
         icon: 'java'
@@ -243,7 +243,7 @@ export const skills = [
     {
         skill: 'Spring Boot',
         level: 3,
-        description: 'Learned basics at university for academic projects. Good Java framework for APIs, but I prefer PHP or Python for backend development.',
+        description: 'Learned Spring Boot basics at university for academic projects. While it\'s a solid Java framework for API development, I generally prefer PHP or Python for backend work and need more hands-on experience.',
         status: 'learning',
         category: ['backend'],
         icon: 'springboot'
