@@ -145,9 +145,9 @@ export const skills = [
         icon: 'hexagonal'
     },
     {
-        skill: 'Modular Monolith Architecture',
+        skill: 'Modular Architecture',
         level: 8,
-        description: 'I have learned the concepts of modular monolith architecture and used it in some personal projects and real projects at work. I like this architecture because it\'s very useful for organizing code and projects, and it\'s easier to implement than microservices architecture.',
+        description: 'I have learned the concepts of Modular Architecture and used it in some personal projects and real projects at work. I like this architecture because it\'s very useful for organizing code and projects, and it\'s easier to implement than microservices architecture.',
         status: 'expert',
         category: ['architecture'],
         icon: 'modular-monolith'
@@ -161,12 +161,20 @@ export const skills = [
         icon: 'monolith'
     },
     {
-        skill: 'VPS Management',
-        level: 7,
+        skill: 'Cloud VPS',
+        level: 6,
         description: 'I have experience managing VPS servers using services like Hostinger and Yachay. For me, it\'s easier than using shared hosting. The only drawback is the cost, but I think it\'s worth it for the benefits it provides. I know other services like Vercel, Netlify, or Laravel Cloud, but I prefer VPS for private projects.',
         status: 'proficient',
         category: ['devops', 'tools'],
         icon: 'vps'
+    },
+    {
+        skill: 'Intranet Management',
+        level: 8,
+        description: 'I have experience managing and deploying intranet systems for companies. I understand the specific requirements and challenges of intranet systems, such as security, access control, and internal communication. I have successfully implemented intranet solutions that improve collaboration and information sharing within organizations.',
+        status: 'expert',
+        category: ['tools', 'other'],
+        icon: 'intranet'
     },
     {
         skill: 'FastAPI',
