@@ -113,14 +113,6 @@ export const skills = [
         icon: 'linux'
     },
     {
-        skill: 'English',
-        level: 7,
-        description: 'I have a B2 level in English. I can read and understand technical documentation without problems, and I can also write and speak in English, but I need to improve my speaking skills.',
-        status: 'proficient',
-        category: ['other'],
-        icon: 'english'
-    },
-    {
         skill: 'MVC Architecture',
         level: 9,
         description: 'I like this architecture because it\'s very useful for organizing code and projects. This is the first architecture I learned - it\'s basic but very useful for understanding software architecture concepts.',
