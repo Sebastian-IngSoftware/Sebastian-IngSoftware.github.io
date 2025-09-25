@@ -25,20 +25,28 @@ export const skills = [
         icon: 'python'
     },
     {
+        skill: 'Laravel',
+        level: 9,
+        description: 'I have been using Laravel for many years and have extensive experience with it. I have used it for many personal and real projects, and I use it daily for my work. I like the framework and think it\'s an excellent choice for web development with PHP because it\'s very comprehensive and has many features that make development easier and faster. Maybe it\'s not the best on the frontend side compared to other frameworks, but for backend, it\'s one of the best in my opinion.',
+        status: 'expert',
+        category: ['backend', 'database','frontend', 'architecture'],
+        icon: 'laravel'
+    },
+    {
+        skill: 'Tests',
+        level: 9,
+        description: 'I consider testing an essential part of software development. I have experience writing unit and integration tests, as well as setting up test environments. I believe that well-written tests help ensure code quality and reliability, making maintenance and future development easier.',
+        status: 'expert',
+        category: ['backend', 'frontend','devops','database','tools'],
+        icon: 'tests'
+    },
+    {
         skill: 'PHP',
         level: 9,
         description: 'I have been using PHP for many years and have extensive experience with it. I have used it for many personal and real projects, and I have deep knowledge of the language. I like PHP and think it\'s a good choice for web development.',
         status: 'expert',
         category: ['backend', 'database','frontend'],
         icon: 'php'
-    },
-    {
-        skill: 'Laravel',
-        level: 8,
-        description: 'I have been using Laravel for many years and have extensive experience with it. I have used it for many personal and real projects, and I use it daily for my work. I like the framework and think it\'s an excellent choice for web development with PHP because it\'s very comprehensive and has many features that make development easier and faster. Maybe it\'s not the best on the frontend side compared to other frameworks, but for backend, it\'s one of the best in my opinion.',
-        status: 'expert',
-        category: ['backend', 'database','frontend', 'architecture'],
-        icon: 'laravel'
     },
     {
         skill: 'Kanban',
@@ -138,9 +146,9 @@ export const skills = [
     },
     {
         skill: 'Modular Monolith Architecture',
-        level: 7,
+        level: 8,
         description: 'I have learned the concepts of modular monolith architecture and used it in some personal projects and real projects at work. I like this architecture because it\'s very useful for organizing code and projects, and it\'s easier to implement than microservices architecture.',
-        status: 'proficient',
+        status: 'expert',
         category: ['architecture'],
         icon: 'modular-monolith'
     },

@@ -13,12 +13,12 @@ export const projects: Project[] = [
     {
         title: 'Scalable OAuth2 Backend API',
         description: 'A scalable backend API built for my employer and secured with OAuth2. Designed as a modular monolith to enable horizontal scaling, reduce infrastructure costs, and improve overall performance and maintainability.',
-        tags: ['Laravel', 'Docker', 'MySQL', 'Modular Monolith Architecture', 'Git', 'Kanban', 'VPS Management']
+        tags: ['Laravel', 'Docker', 'MySQL', 'Modular Monolith Architecture', 'Git', 'Kanban', 'VPS Management','Tests']
     },
     {
         title: 'Employee Training & Certification Platform',
         description: 'A full-stack application for managing employee training and certifications. Used by the quality department to schedule courses, track participation, and generate reports, improving compliance and training transparency.',
-        tags: ['Laravel', 'Docker', 'MySQL', 'Monolith Architecture', 'Git', 'Bootstrap', 'Kanban', 'Node']
+        tags: ['Laravel', 'Docker', 'MySQL', 'Monolith Architecture', 'Git', 'Bootstrap', 'Kanban', 'Node','Tests']
     },
     {
         title: 'Cancer Risk Prediction Model',
@@ -30,7 +30,7 @@ export const projects: Project[] = [
         title: 'Document Management System',
         description: 'An enterprise document management system built to store, organize, and generate reports. Deployed on the company intranet, it improved traceability, version control, and process oversight.',
         image:'docusys.jpg',
-        tags: ['Laravel', 'Docker', 'MySQL', 'Monolith Architecture', 'Git', 'Bootstrap', 'Kanban', 'Node', 'MVC Architecture', 'Linux', 'Vite']
+        tags: ['Laravel', 'Docker', 'MySQL', 'Monolith Architecture', 'Git', 'Bootstrap', 'Kanban', 'Node', 'MVC Architecture', 'Linux', 'Vite','Tests']
     },
     {
         title: 'Corporate Presentation Website',
