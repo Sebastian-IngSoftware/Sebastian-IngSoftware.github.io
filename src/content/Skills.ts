@@ -3,7 +3,7 @@ export interface Skills {
     level: number; // Level from 1 to 10
     description: string;
     status: 'learning' | 'proficient' | 'expert';
-    category: Array<'frontend' | 'backend' | 'devops' | 'database' | 'architecture' | 'tools' | 'other' | 'IA'>;
+    category: Array<'frontend' | 'backend' | 'devops' | 'database' | 'architecture' | 'tools' | 'IA'>;
     icon: string;
 }
 
@@ -165,7 +165,7 @@ export const skills = [
         level: 8,
         description: 'I have experience managing and deploying intranet systems for companies. I understand the specific requirements and challenges of intranet systems, such as security, access control, and internal communication. I have successfully implemented intranet solutions that improve collaboration and information sharing within organizations.',
         status: 'expert',
-        category: ['tools', 'other'],
+        category: ['devops'],
         icon: 'intranet'
     },
     {

@@ -1,26 +1,29 @@
 ---
 import { skills } from "@/content/Skills";
 
-const mainSkillIcons = ['python', 'machine-learning', 'fastapi', 'docker'];
-const mainSkills = skills.filter(s => mainSkillIcons.includes(s.icon));
-const otherSkills = skills.filter(s => !mainSkillIcons.includes(s.icon));
+const mainSkillIcons = ["python", "machine-learning", "fastapi", "docker"];
+const mainSkills = skills.filter((s) => mainSkillIcons.includes(s.icon));
+const otherSkills = skills.filter((s) => !mainSkillIcons.includes(s.icon));
 ---
 
 <style>
-.skill-details {
-  max-height: 0;
-  opacity: 0;
-  overflow: hidden;
-}
+  .skill-details {
+    max-height: 0;
+    opacity: 0;
+    overflow: hidden;
+  }
 
-.skill-details.expanded {
-  max-height: 500px; /* altura máxima */
-  opacity: 1;
-}
-
+  .skill-details.expanded {
+    max-height: 500px; /* altura máxima */
+    opacity: 1;
+  }
 
   .level-fill {
-    background: linear-gradient(90deg, var(--color-accent), var(--color-success));
+    background: linear-gradient(
+      90deg,
+      var(--color-accent),
+      var(--color-success)
+    );
     transition: width 0.5s ease;
   }
 </style>
@@ -28,62 +31,93 @@ const otherSkills = skills.filter(s => !mainSkillIcons.includes(s.icon));
 <div class="p-6 rounded-xl">
   <!-- Current Focus -->
   <div class="mb-6">
-    <h3 class="m-0 text-success text-xl sm:text-2xl font-bold">Current Focus</h3>
+    <h3 class="m-0 text-success text-xl sm:text-2xl font-bold">
+      Current Focus
+    </h3>
     <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4 mt-4">
-      {mainSkills.map((ms) => (
-        <article class="relative flex flex-col p-4 sm:p-5 rounded-xl border border-border bg-secondary hover:shadow-2xl hover:-translate-y-1 transition-all duration-200">
-          <div class="absolute left-0 top-0 bottom-0 w-1 bg-accent rounded-r-md"></div>
-          <div class="flex items-start gap-4 pl-3">
-            <div class="w-14 h-14 flex items-center justify-center rounded-lg bg-white border border-border shadow-sm">
-              <img src={`/svgs/${ms.icon}.svg`} alt={ms.skill + ' icon'} class="w-9 h-9 object-contain" loading="lazy" />
+      {
+        mainSkills.map((ms) => (
+          <article class="relative flex flex-col p-4 sm:p-5 rounded-xl border border-border bg-secondary hover:shadow-2xl hover:-translate-y-1 transition-all duration-200">
+            <div class="absolute left-0 top-0 bottom-0 w-1 bg-accent rounded-r-md" />
+            <div class="flex items-start gap-4 pl-3">
+              <div class="w-14 h-14 flex items-center justify-center rounded-lg bg-white border border-border shadow-sm">
+                <img
+                  src={`/svgs/${ms.icon}.svg`}
+                  alt={ms.skill + " icon"}
+                  class="w-9 h-9 object-contain"
+                  loading="lazy"
+                />
+              </div>
+              <div class="flex-1 min-w-0">
+                <h4 class="text-text font-bold text-sm truncate">{ms.skill}</h4>
+                <div class="flex items-center gap-2 mt-1">
+                  <span
+                    class={`inline-block text-xs px-2 py-0.5 rounded-full uppercase tracking-wide ${
+                      ms.status === "learning" ? "bg-tertiary text-text" : ""
+                    } ${ms.status === "proficient" ? "bg-accent text-background" : ""} ${
+                      ms.status === "expert" ? "bg-success text-background" : ""
+                    }`}
+                  >
+                    {ms.status}
+                  </span>
+                  <span class="text-text-muted text-xs">
+                    Level {ms.level}/10
+                  </span>
+                </div>
+              </div>
             </div>
-            <div class="flex-1 min-w-0">
-              <h4 class="text-text font-bold text-sm truncate">{ms.skill}</h4>
-              <div class="flex items-center gap-2 mt-1">
-                <span class={`inline-block text-xs px-2 py-0.5 rounded-full uppercase tracking-wide ${
-                  ms.status === 'learning' ? 'bg-tertiary text-text' : ''
-                } ${ms.status === 'proficient' ? 'bg-accent text-background' : ''} ${
-                  ms.status === 'expert' ? 'bg-success text-background' : ''
-                }`}>
-                  {ms.status}
+            <div class="mt-3 flex-1">
+              <p class="text-text-muted text-sm leading-relaxed">
+                {ms.description}
+              </p>
+            </div>
+            <div class="mt-2 flex flex-wrap gap-1">
+              {ms.category.map((cat) => (
+                <span class="inline-block px-2 py-0.5 bg-tertiary text-text rounded-xl text-xs">
+                  {cat}
                 </span>
-                <span class="text-text-muted text-xs">Level {ms.level}/10</span>
+              ))}
+            </div>
+            <div class="w-full mt-4">
+              <div class="flex items-center justify-between gap-3">
+                <div class="flex-1 h-2 bg-tertiary rounded-full overflow-hidden">
+                  <div
+                    class="level-fill h-full"
+                    style={`width: ${ms.level * 10}%`}
+                  />
+                </div>
+                <div class="text-text text-xs w-12 text-right">
+                  {ms.level * 10}%
+                </div>
               </div>
             </div>
-          </div>
-          <div class="mt-3 flex-1">
-            <p class="text-text-muted text-sm leading-relaxed">{ms.description}</p>
-          </div>
-          <div class="w-full mt-4">
-            <div class="flex items-center justify-between gap-3">
-              <div class="flex-1 h-2 bg-tertiary rounded-full overflow-hidden">
-                <div class="level-fill h-full" style={`width: ${ms.level * 10}%`}></div>
-              </div>
-              <div class="text-text text-xs w-12 text-right">{ms.level * 10}%</div>
-            </div>
-          </div>
-        </article>
-      ))}
+          </article>
+        ))
+      }
     </div>
   </div>
 
   <!-- Technical Skills -->
   <div class="p-6 rounded-xl">
-    <h3 class="m-0 text-success text-xl sm:text-2xl font-bold">Technical Skills</h3>
+    <h3 class="m-0 text-success text-xl sm:text-2xl font-bold">
+      Technical Skills
+    </h3>
 
-    <div class="flex flex-col sm:flex-row gap-2 sm:gap-3 items-start sm:items-center py-5">
+    <div
+      class="flex flex-col sm:flex-row gap-2 sm:gap-3 items-start sm:items-center py-5"
+    >
       <label class="text-text text-sm font-medium">Sort by:</label>
-      <select 
-        class="bg-surface text-text border border-border rounded-md px-3 py-2 text-sm cursor-pointer focus:outline-none focus:border-accent transition-colors" 
+      <select
+        class="bg-surface text-text border border-border rounded-md px-3 py-2 text-sm cursor-pointer focus:outline-none focus:border-accent transition-colors"
         onchange="sortSkills(this.value)"
       >
         <option value="level">Level (High to Low)</option>
         <option value="name">Name (A-Z)</option>
       </select>
-      
-      <select 
-        class="bg-surface text-text border border-border rounded-md px-3 py-2 text-sm cursor-pointer focus:outline-none focus:border-accent transition-colors" 
-        id="categoryFilter" 
+
+      <select
+        class="bg-surface text-text border border-border rounded-md px-3 py-2 text-sm cursor-pointer focus:outline-none focus:border-accent transition-colors"
+        id="categoryFilter"
         onchange="filterByCategory(this.value)"
       >
         <option value="all">All Categories</option>
@@ -93,80 +127,96 @@ const otherSkills = skills.filter(s => !mainSkillIcons.includes(s.icon));
         <option value="database">Database</option>
         <option value="architecture">Architecture</option>
         <option value="tools">Tools</option>
-        <option value="IA">AI/ML</option>
-        <option value="other">Other</option>
       </select>
     </div>
 
     <!-- GRID con auto-rows -->
-<div 
-  id="skillsContainer" 
-  class="grid grid-cols-1 sm:grid-cols-[repeat(auto-fill,minmax(280px,1fr))] gap-3 auto-rows-[140px]"
->
-      {otherSkills.map((skill, index) => (
-<div 
-  id={`card-${index}`}
-  class="
+    <div
+      id="skillsContainer"
+      class="grid grid-cols-1 sm:grid-cols-[repeat(auto-fill,minmax(280px,1fr))] gap-3 auto-rows-[140px]"
+    >
+      {
+        otherSkills.map((skill, index) => (
+          <div
+            id={`card-${index}`}
+            class="
     flex flex-col justify-center
     bg-secondary border border-border rounded-lg p-4 
     transition-all duration-300 cursor-pointer
     hover:-translate-y-0.5 hover:shadow-lg hover:shadow-accent/20
   "
-  data-level={skill.level}
-  data-status={skill.status}
-  data-categories={skill.category.join(',')}
-  data-name={skill.skill}
-  onclick={`toggleSkill(${index})`}
->
-  <div class="flex items-center justify-between">
-            <div class="flex items-center gap-2 sm:gap-3 min-w-0 flex-1">
-              <div class="w-8 h-8 bg-white rounded-md flex items-center justify-center">
-                <img src={`/svgs/${skill.icon}.svg`} alt={skill.skill + ' icon'} class="w-full h-full object-contain" loading="lazy" />
-              </div>
-              <div class="min-w-0 flex-1">
-                <h4 class="m-0 text-text text-sm sm:text-base font-semibold truncate">{skill.skill}</h4>
-                <span class={`
+            data-level={skill.level}
+            data-status={skill.status}
+            data-categories={skill.category.join(",")}
+            data-name={skill.skill}
+            onclick={`toggleSkill(${index})`}
+          >
+            <div class="flex items-center justify-between">
+              <div class="flex items-center gap-2 sm:gap-3 min-w-0 flex-1">
+                <div class="w-8 h-8 bg-white rounded-md flex items-center justify-center">
+                  <img
+                    src={`/svgs/${skill.icon}.svg`}
+                    alt={skill.skill + " icon"}
+                    class="w-full h-full object-contain"
+                    loading="lazy"
+                  />
+                </div>
+                <div class="min-w-0 flex-1">
+                  <h4 class="m-0 text-text text-sm sm:text-base font-semibold truncate">
+                    {skill.skill}
+                  </h4>
+                  <span
+                    class={`
                   inline-block px-2 py-0.5 rounded-xl text-xs mt-0.5
-                  ${skill.status === 'learning' ? 'bg-tertiary text-text' : ''}
-                  ${skill.status === 'proficient' ? 'bg-accent text-background' : ''}
-                  ${skill.status === 'expert' ? 'bg-success text-background' : ''}
-                `}>
-                  {skill.status}
-                </span>
-              </div>
-            </div>
-            <div class="text-text-muted text-xl" id={`arrow-${index}`}>
-              ▼
-            </div>
-          </div>
-
-          <div class="w-full h-1.5 bg-tertiary rounded-full overflow-hidden my-2">
-            <div class="level-fill h-full" style={`width: ${skill.level * 10}%`}></div>
-          </div>
-
-          <div class="skill-details" id={`details-${index}`}>
-            <div class="bg-primary p-3 rounded-md mb-3">
-              <p class="m-0 text-text-muted leading-relaxed text-sm">
-                {skill.description}
-              </p>
-            </div>
-            <div class="mb-2">
-              <strong class="text-accent text-sm font-semibold">Level:</strong>
-              <span class="text-text ml-2 text-sm">{skill.level}/10</span>
-            </div>
-            <div>
-              <strong class="text-accent text-sm font-semibold">Categories:</strong>
-              <div class="mt-1 flex flex-wrap gap-1">
-                {skill.category.map((cat) => (
-                  <span class="inline-block px-2 py-0.5 bg-tertiary text-text rounded-xl text-xs">
-                    {cat}
+                  ${skill.status === "learning" ? "bg-tertiary text-text" : ""}
+                  ${skill.status === "proficient" ? "bg-accent text-background" : ""}
+                  ${skill.status === "expert" ? "bg-success text-background" : ""}
+                `}
+                  >
+                    {skill.status}
                   </span>
-                ))}
+                </div>
+              </div>
+              <div class="text-text-muted text-xl" id={`arrow-${index}`}>
+                ▼
+              </div>
+            </div>
+
+            <div class="w-full h-1.5 bg-tertiary rounded-full overflow-hidden my-2">
+              <div
+                class="level-fill h-full"
+                style={`width: ${skill.level * 10}%`}
+              />
+            </div>
+
+            <div class="skill-details" id={`details-${index}`}>
+              <div class="bg-primary p-3 rounded-md mb-3">
+                <p class="m-0 text-text-muted leading-relaxed text-sm">
+                  {skill.description}
+                </p>
+              </div>
+              <div class="mb-2">
+                <strong class="text-accent text-sm font-semibold">
+                  Level:
+                </strong>
+                <span class="text-text ml-2 text-sm">{skill.level}/10</span>
+              </div>
+              <div>
+                <strong class="text-accent text-sm font-semibold">
+                  Categories:
+                </strong>
+                <div class="mt-1 flex flex-wrap gap-1">
+                  {skill.category.map((cat) => (
+                    <span class="inline-block px-2 py-0.5 bg-tertiary text-text rounded-xl text-xs">
+                      {cat}
+                    </span>
+                  ))}
+                </div>
               </div>
             </div>
           </div>
-        </div>
-      ))}
+        ))
+      }
     </div>
   </div>
 </div>
@@ -178,46 +228,52 @@ const otherSkills = skills.filter(s => !mainSkillIcons.includes(s.icon));
     const card = document.getElementById(`card-${index}`);
 
     if (details && arrow && card) {
-      if (details.classList.contains('expanded')) {
-        details.classList.remove('expanded');
-        arrow.textContent = '▼';
-        card.classList.remove('row-span-3', 'row-span-4');
+      if (details.classList.contains("expanded")) {
+        details.classList.remove("expanded");
+        arrow.textContent = "▼";
+        card.classList.remove("row-span-3", "row-span-4");
       } else {
-        details.classList.add('expanded');
-        arrow.textContent = '▲';
-        card.classList.add('row-span-3'); // ocupa 3 filas → 600px
+        details.classList.add("expanded");
+        arrow.textContent = "▲";
+        card.classList.add("row-span-3"); // ocupa 3 filas → 600px
       }
     }
   }
 
-  function sortSkills(sortBy: 'level' | 'name') {
-    const container = document.getElementById('skillsContainer');
+  function sortSkills(sortBy: "level" | "name") {
+    const container = document.getElementById("skillsContainer");
     if (!container) return;
 
     const skillItems = Array.from(container.children) as HTMLElement[];
-    
+
     skillItems.sort((a, b) => {
       switch (sortBy) {
-        case 'level':
-          return parseInt((b as HTMLElement).dataset.level || '0') - parseInt((a as HTMLElement).dataset.level || '0');
-        case 'name':
-          return ((a as HTMLElement).dataset.name || '').localeCompare((b as HTMLElement).dataset.name || '');
+        case "level":
+          return (
+            parseInt((b as HTMLElement).dataset.level || "0") -
+            parseInt((a as HTMLElement).dataset.level || "0")
+          );
+        case "name":
+          return ((a as HTMLElement).dataset.name || "").localeCompare(
+            (b as HTMLElement).dataset.name || "",
+          );
         default:
           return 0;
       }
     });
 
-    skillItems.forEach(item => container.appendChild(item));
+    skillItems.forEach((item) => container.appendChild(item));
   }
 
   function filterByCategory(category: string) {
-    const container = document.getElementById('skillsContainer');
+    const container = document.getElementById("skillsContainer");
     if (!container) return;
 
     const skillItems = Array.from(container.children);
-    skillItems.forEach(item => {
-      const categories = (item as HTMLElement).dataset.categories || '';
-      (item as HTMLElement).style.display = category === 'all' || categories.includes(category) ? '' : 'none';
+    skillItems.forEach((item) => {
+      const categories = (item as HTMLElement).dataset.categories || "";
+      (item as HTMLElement).style.display =
+        category === "all" || categories.includes(category) ? "" : "none";
     });
   }
 
@@ -225,7 +281,7 @@ const otherSkills = skills.filter(s => !mainSkillIcons.includes(s.icon));
   (window as any).sortSkills = sortSkills;
   (window as any).filterByCategory = filterByCategory;
 
-  document.addEventListener('DOMContentLoaded', () => {
-    sortSkills('level');
+  document.addEventListener("DOMContentLoaded", () => {
+    sortSkills("level");
   });
 </script>

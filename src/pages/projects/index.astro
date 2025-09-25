@@ -2,6 +2,7 @@
 import Layout from "@/layouts/Layout.astro";
 import { projects } from "@/content/Projects";
 import { skills } from "@/content/Skills";
+import SkillIcon from "@/components/SkillIcon.jsx";
 
 // Función auxiliar para mapear tags → skills
 const getProjectSkills = (tags: any) => {
@@ -42,20 +43,7 @@ const getUniqueCategories = (projectSkills: any[]) => {
               <div class="flex-1 grid grid-cols-3 sm:grid-cols-4 md:grid-cols-5 gap-6">
                 {projectSkills.length > 0 ? (
                   projectSkills.map((skill) => (
-                    <div class="group relative w-20 h-20 flex items-center justify-center bg-white rounded-xl shadow-lg border border-border transition-all duration-300 hover:scale-105">
-                      <img
-                        src={`/svgs/${skill.icon}.svg`}
-                        alt={skill.skill + " icon"}
-                        class="w-12 h-12 object-contain transition-all duration-300 group-hover:translate-y-[-10px] z-0"
-                        loading="lazy"
-                      />
-                      <span
-                        style="z-index:10;"
-                        class="absolute left-1/2 -translate-x-1/2 px-2 py-1 rounded bg-black text-white text-xs opacity-0 group-hover:opacity-100 transition-all duration-300 pointer-events-none whitespace-nowrap group-hover:bottom-2 group-hover:translate-y-0 bottom-0 translate-y-4"
-                      >
-                        {skill.skill}
-                      </span>
-                    </div>
+                    <SkillIcon skill={skill.skill} icon={skill.icon} client:load/>
                   ))
                 ) : (
                   <div class="w-full h-40 flex items-center justify-center text-text-muted border border-border rounded-xl bg-surface">
