@@ -18,7 +18,7 @@ export const skills = [
     },
     {
         skill: 'Python',
-        level: 5,
+        level: 8,
         description: 'I use Python for data analysis in real projects and create scripts with Flask or FastAPI to leverage libraries like sklearn. I enjoy the clean syntax and vast ecosystem of libraries. Currently expanding my knowledge in data science and machine learning.',
         status: 'learning',
         category: ['backend', 'IA'],
@@ -58,7 +58,7 @@ export const skills = [
     },
     {
         skill: 'Docker',
-        level: 5,
+        level: 8,
         description: 'I use Docker across all projects because containers provide excellent dependency isolation and consistent environments. My laptop runs all personal and work projects in Docker, which streamlines development workflows significantly.',
         status: 'learning',
         category: ['devops'],
@@ -103,6 +103,22 @@ export const skills = [
         status: 'expert',
         category: ['tools'],
         icon: 'git'
+    },
+    {
+        skill: 'GitLab',
+        level: 4,
+        description: 'I use GitLab for works projects, for my own I learned how to install in personal server and use it for version control. I like GitLab because it has many features and is very customizable.',
+        status: 'learning',
+        category: ['tools'],
+        icon: 'gitlab'
+    },
+    {
+        skill: 'GitHub',
+        level: 8,
+        description: 'I use GitHub for personal projects and to share my work with the community. I used it for frelancer works and I have experience with its features like GitHub Actions for CI/CD. I like GitHub because it\'s very popular and has a large community.',
+        status: 'proficient',
+        category: ['tools'],
+        icon: 'github'
     },
     {
         skill: 'Linux',
@@ -170,7 +186,7 @@ export const skills = [
     },
     {
         skill: 'FastAPI',
-        level: 4,
+        level: 6,
         description: 'Used FastAPI for personal projects and appreciate its automatic documentation and performance. It\'s excellent for Python APIs, especially when leveraging ML libraries like sklearn. Currently building a public framework with it on GitHub.',
         status: 'learning',
         category: ['backend', 'IA'],
@@ -178,7 +194,7 @@ export const skills = [
     },
     {
         skill: 'Machine Learning',
-        level: 4,
+        level: 5,
         description: 'Learned ML fundamentals using sklearn and pandas for personal projects and master\'s coursework. I\'m genuinely interested in this field and believe it represents the future of technology development.',
         status: 'learning',
         category: ['IA'],
