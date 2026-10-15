@@ -1,287 +1,455 @@
 ---
-import { skills } from "@/content/Skills";
+import { skills, CATEGORIES, type Skill, type Status } from "@/content/Skills";
 
-const mainSkillIcons = ["python", "machine-learning", "fastapi", "docker"];
-const mainSkills = skills.filter((s) => mainSkillIcons.includes(s.icon));
-const otherSkills = skills.filter((s) => !mainSkillIcons.includes(s.icon));
+// Skills de "Current focus" (mantienen este orden)
+const focusIcons = ["python", "machine-learning", "fastapi", "docker"];
+
+type Item = Skill & { id: string; focus: boolean };
+
+// Tipar cada item como Skill ensancha `category` a readonly Category[]
+// (con `as const` puro es una unión de tuplas y .includes() pide `never`)
+const items: Item[] = skills
+  .map((s, i): Item => ({ ...s, id: String(i), focus: focusIcons.includes(s.icon) }))
+  .sort((a, b) => b.level - a.level || a.skill.localeCompare(b.skill));
+
+const focusItems = focusIcons.flatMap((icon) => items.filter((i) => i.icon === icon));
+const techItems = items.filter((i) => !i.focus);
+
+// Filtros derivados de los datos: "All" y las categorías con al menos una skill técnica
+const filters = [
+  { value: "all", label: "All", count: techItems.length },
+  ...CATEGORIES.map((cat) => ({
+    value: cat,
+    label: cat,
+    count: techItems.filter((i) => i.category.includes(cat)).length,
+  })),
+].filter((f) => f.count > 0);
+
+// Skills que comparten categorías, las más afines primero
+function relatedTo(item: Item) {
+  return items
+    .filter((o) => o.id !== item.id)
+    .map((o) => ({ o, shared: o.category.filter((c) => item.category.includes(c)).length }))
+    .filter((r) => r.shared > 0)
+    .sort((a, b) => b.shared - a.shared || b.o.level - a.o.level)
+    .slice(0, 4)
+    .map((r) => r.o);
+}
+
+// Record<Status, ...>: si agregas un status nuevo, TypeScript avisa que falta su estilo
+const statusText: Record<Status, string> = {
+  learning: "text-text-muted",
+  proficient: "text-accent",
+  expert: "text-success",
+};
+const statusDot: Record<Status, string> = {
+  learning: "bg-text-muted",
+  proficient: "bg-accent",
+  expert: "bg-success",
+};
 ---
 
 <style>
-  .skill-details {
-    max-height: 0;
-    opacity: 0;
-    overflow: hidden;
+  /* Estado vacío: tres anillos que se expanden desde el centro */
+  .ring {
+    animation: ring 3.6s ease-out infinite;
   }
-
-  .skill-details.expanded {
-    max-height: 500px; /* altura máxima */
-    opacity: 1;
+  .ring:nth-child(2) {
+    animation-delay: 1.2s;
   }
-
-  .level-fill {
-    background: linear-gradient(
-      90deg,
-      var(--color-accent),
-      var(--color-success)
-    );
-    transition: width 0.5s ease;
+  .ring:nth-child(3) {
+    animation-delay: 2.4s;
   }
-</style>
-
-<div class="p-6 rounded-xl">
-  <!-- Current Focus -->
-  <div class="mb-6">
-    <h3 class="m-0 text-success text-xl sm:text-2xl font-bold">
-      Current Focus
-    </h3>
-    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4 mt-4">
-      {
-        mainSkills.map((ms) => (
-          <article class="relative flex flex-col p-4 sm:p-5 rounded-xl border border-border bg-secondary hover:shadow-2xl hover:-translate-y-1 transition-all duration-200">
-            <div class="absolute left-0 top-0 bottom-0 w-1 bg-accent rounded-r-md" />
-            <div class="flex items-start gap-4 pl-3">
-              <div class="w-14 h-14 flex items-center justify-center rounded-lg bg-white border border-border shadow-sm">
-                <img
-                  src={`/svgs/${ms.icon}.svg`}
-                  alt={ms.skill + " icon"}
-                  class="w-9 h-9 object-contain"
-                  loading="lazy"
-                />
-              </div>
-              <div class="flex-1 min-w-0">
-                <h4 class="text-text font-bold text-sm truncate">{ms.skill}</h4>
-                <div class="flex items-center gap-2 mt-1">
-                  <span
-                    class={`inline-block text-xs px-2 py-0.5 rounded-full uppercase tracking-wide ${
-                      ms.status === "learning" ? "bg-tertiary text-text" : ""
-                    } ${ms.status === "proficient" ? "bg-accent text-background" : ""} ${
-                      ms.status === "expert" ? "bg-success text-background" : ""
-                    }`}
-                  >
-                    {ms.status}
-                  </span>
-                  <span class="text-text-muted text-xs">
-                    Level {ms.level}/10
-                  </span>
-                </div>
-              </div>
-            </div>
-            <div class="mt-3 flex-1">
-              <p class="text-text-muted text-sm leading-relaxed">
-                {ms.description}
-              </p>
-            </div>
-            <div class="mt-2 flex flex-wrap gap-1">
-              {ms.category.map((cat) => (
-                <span class="inline-block px-2 py-0.5 bg-tertiary text-text rounded-xl text-xs">
-                  {cat}
-                </span>
-              ))}
-            </div>
-            <div class="w-full mt-4">
-              <div class="flex items-center justify-between gap-3">
-                <div class="flex-1 h-2 bg-tertiary rounded-full overflow-hidden">
-                  <div
-                    class="level-fill h-full"
-                    style={`width: ${ms.level * 10}%`}
-                  />
-                </div>
-                <div class="text-text text-xs w-12 text-right">
-                  {ms.level * 10}%
-                </div>
-              </div>
-            </div>
-          </article>
-        ))
-      }
-    </div>
-  </div>
-
-  <!-- Technical Skills -->
-  <div class="rounded-xl">
-    <h3 class="m-0 text-success text-xl sm:text-2xl font-bold">
-      Technical Skills
-    </h3>
-
-    <div
-      class="flex flex-col sm:flex-row gap-2 sm:gap-3 items-start sm:items-center py-5"
-    >
-      <label class="text-text text-sm font-medium">Sort by:</label>
-      <select
-        class="bg-surface text-text border border-border rounded-md px-3 py-2 text-sm cursor-pointer focus:outline-none focus:border-accent transition-colors"
-        onchange="sortSkills(this.value)"
-      >
-        <option value="level">Level (High to Low)</option>
-        <option value="name">Name (A-Z)</option>
-      </select>
-
-      <select
-        class="bg-surface text-text border border-border rounded-md px-3 py-2 text-sm cursor-pointer focus:outline-none focus:border-accent transition-colors"
-        id="categoryFilter"
-        onchange="filterByCategory(this.value)"
-      >
-        <option value="all">All Categories</option>
-        <option value="frontend">Frontend</option>
-        <option value="backend">Backend</option>
-        <option value="devops">DevOps</option>
-        <option value="database">Database</option>
-        <option value="architecture">Architecture</option>
-        <option value="tools">Tools</option>
-      </select>
-    </div>
-
-    <!-- GRID con auto-rows -->
-    <div
-      id="skillsContainer"
-      class="grid grid-cols-1 sm:grid-cols-[repeat(auto-fill,minmax(280px,1fr))] gap-3 auto-rows-[150px]"
-    >
-      {
-        otherSkills.map((skill, index) => (
-          <div
-            id={`card-${index}`}
-            class="
-    flex flex-col justify-center
-    bg-secondary border border-border rounded-lg p-4 
-    transition-all duration-300 cursor-pointer
-    hover:-translate-y-0.5 hover:shadow-lg hover:shadow-accent/20
-  "
-            data-level={skill.level}
-            data-status={skill.status}
-            data-categories={skill.category.join(",")}
-            data-name={skill.skill}
-            onclick={`toggleSkill(${index})`}
-          >
-            <div class="flex items-center justify-between">
-              <div class="flex items-center gap-2 sm:gap-3 min-w-0 flex-1">
-                <div class="w-8 h-8 bg-white rounded-md flex items-center justify-center">
-                  <img
-                    src={`/svgs/${skill.icon}.svg`}
-                    alt={skill.skill + " icon"}
-                    class="w-full h-full object-contain"
-                    loading="lazy"
-                  />
-                </div>
-                <div class="min-w-0 flex-1">
-                  <h4 class="m-0 text-text text-sm sm:text-base font-semibold truncate">
-                    {skill.skill}
-                  </h4>
-                  <span
-                    class={`
-                  inline-block px-2 py-0.5 rounded-xl text-xs mt-0.5
-                  ${skill.status === "learning" ? "bg-tertiary text-text" : ""}
-                  ${skill.status === "proficient" ? "bg-accent text-background" : ""}
-                  ${skill.status === "expert" ? "bg-success text-background" : ""}
-                `}
-                  >
-                    {skill.status}
-                  </span>
-                </div>
-              </div>
-              <div class="text-text-muted text-xl" id={`arrow-${index}`}>
-                ▼
-              </div>
-            </div>
-
-            <div class="w-full h-1.5 bg-tertiary rounded-full overflow-hidden my-2">
-              <div
-                class="level-fill h-full"
-                style={`width: ${skill.level * 10}%`}
-              />
-            </div>
-
-            <div class="skill-details" id={`details-${index}`}>
-              <div class="bg-primary p-3 rounded-md mb-3">
-                <p class="m-0 text-text-muted leading-relaxed text-sm">
-                  {skill.description}
-                </p>
-              </div>
-              <div class="mb-2">
-                <strong class="text-accent text-sm font-semibold">
-                  Level:
-                </strong>
-                <span class="text-text ml-2 text-sm">{skill.level}/10</span>
-              </div>
-              <div>
-                <strong class="text-accent text-sm font-semibold">
-                  Categories:
-                </strong>
-                <div class="mt-1 flex flex-wrap gap-1">
-                  {skill.category.map((cat) => (
-                    <span class="inline-block px-2 py-0.5 bg-tertiary text-text rounded-xl text-xs">
-                      {cat}
-                    </span>
-                  ))}
-                </div>
-              </div>
-            </div>
-          </div>
-        ))
-      }
-    </div>
-  </div>
-</div>
-
-<script>
-  function toggleSkill(index: number) {
-    const details = document.getElementById(`details-${index}`);
-    const arrow = document.getElementById(`arrow-${index}`);
-    const card = document.getElementById(`card-${index}`);
-
-    if (details && arrow && card) {
-      if (details.classList.contains("expanded")) {
-        details.classList.remove("expanded");
-        arrow.textContent = "▼";
-        card.classList.remove("row-span-3", "row-span-4");
-      } else {
-        details.classList.add("expanded");
-        arrow.textContent = "▲";
-        card.classList.add("row-span-3"); // ocupa 3 filas → 600px
-      }
+  @keyframes ring {
+    0% {
+      transform: scale(0.45);
+      opacity: 0.55;
+    }
+    100% {
+      transform: scale(1.5);
+      opacity: 0;
     }
   }
 
-  function sortSkills(sortBy: "level" | "name") {
-    const container = document.getElementById("skillsContainer");
-    if (!container) return;
-
-    const skillItems = Array.from(container.children) as HTMLElement[];
-
-    skillItems.sort((a, b) => {
-      switch (sortBy) {
-        case "level":
-          return (
-            parseInt((b as HTMLElement).dataset.level || "0") -
-            parseInt((a as HTMLElement).dataset.level || "0")
-          );
-        case "name":
-          return ((a as HTMLElement).dataset.name || "").localeCompare(
-            (b as HTMLElement).dataset.name || "",
-          );
-        default:
-          return 0;
-      }
-    });
-
-    skillItems.forEach((item) => container.appendChild(item));
+  /* Al elegir una skill, el detalle entra suavemente */
+  .detail-in {
+    animation: detail-in 0.28s ease-out;
+  }
+  @keyframes detail-in {
+    from {
+      opacity: 0;
+      transform: translateY(8px);
+    }
+    to {
+      opacity: 1;
+      transform: none;
+    }
   }
 
-  function filterByCategory(category: string) {
-    const container = document.getElementById("skillsContainer");
-    if (!container) return;
+  .chips {
+    scrollbar-width: none;
+  }
+  .chips::-webkit-scrollbar {
+    display: none;
+  }
 
-    const skillItems = Array.from(container.children);
-    skillItems.forEach((item) => {
-      const categories = (item as HTMLElement).dataset.categories || "";
-      (item as HTMLElement).style.display =
-        category === "all" || categories.includes(category) ? "" : "none";
+  @media (prefers-reduced-motion: reduce) {
+    .ring,
+    .detail-in {
+      animation: none;
+    }
+    .ring {
+      opacity: 0.25;
+    }
+  }
+</style>
+
+<div class="grid lg:grid-cols-[minmax(0,1fr)_380px] items-start">
+  <div class="flex flex-col gap-10 min-w-0 lg:pr-8">
+    <!-- Current focus -->
+    <section aria-labelledby="focus-title">
+      <h3 id="focus-title" class="m-0 text-success text-xl sm:text-2xl font-bold">
+        Current focus
+      </h3>
+
+      <ul class="m-0 mt-5 p-0 list-none grid grid-cols-1 sm:grid-cols-2 gap-3">
+        {
+          focusItems.map((item) => (
+            <li class="contents">
+              <button
+                type="button"
+                class="skill-tile flex h-full flex-col gap-3 rounded-xl border border-border/70 bg-surface p-4 text-left transition-colors hover:border-accent/60 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent aria-pressed:border-accent aria-pressed:bg-secondary/50"
+                aria-pressed="false"
+                data-id={item.id}
+              >
+                <div class="flex items-center gap-3">
+                  <div class="w-11 h-11 shrink-0 bg-white rounded-lg p-1.5 flex items-center justify-center">
+                    <img
+                      src={`/svgs/${item.icon}.svg`}
+                      alt=""
+                      class="w-full h-full object-contain"
+                      loading="lazy"
+                    />
+                  </div>
+                  <div class="min-w-0 flex-1">
+                    <h4 class="m-0 text-text text-base font-semibold truncate">
+                      {item.skill}
+                    </h4>
+                    <p class={`m-0 mt-0.5 flex items-center gap-1.5 text-xs capitalize ${statusText[item.status]}`}>
+                      <span class={`w-1.5 h-1.5 rounded-full ${statusDot[item.status]}`} aria-hidden="true" />
+                      {item.status}
+                    </p>
+                  </div>
+                  <span class="shrink-0 text-xs text-text-muted">{item.level}/10</span>
+                </div>
+                <div class="h-1.5 rounded-full bg-tertiary/40 overflow-hidden" aria-hidden="true">
+                  <div class="h-full rounded-full bg-accent/80" style={`width: ${item.level * 10}%`} />
+                </div>
+              </button>
+            </li>
+          ))
+        }
+      </ul>
+    </section>
+
+    <!-- Technical skills -->
+    <section aria-labelledby="tech-title">
+      <h3 id="tech-title" class="m-0 text-success text-xl sm:text-2xl font-bold">
+        Technical skills
+      </h3>
+
+      <div
+        id="filterBar"
+        class="chips mt-5 flex gap-2 overflow-x-auto -mx-1 px-1 py-1"
+        role="group"
+        aria-label="Filter technical skills"
+      >
+        {
+          filters.map((f, i) => (
+            <button
+              type="button"
+              data-filter={f.value}
+              aria-pressed={i === 0 ? "true" : "false"}
+              class="shrink-0 inline-flex items-center gap-1.5 rounded-full border border-border/70 px-3 py-1 text-sm text-text-muted capitalize transition-colors hover:text-text hover:border-accent/60 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent aria-pressed:border-accent aria-pressed:bg-accent/15 aria-pressed:text-accent"
+            >
+              {f.label}
+              <span class="text-xs opacity-60">{f.count}</span>
+            </button>
+          ))
+        }
+      </div>
+
+      <ul
+        id="skillsList"
+        class="m-0 mt-5 p-0 list-none grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-2.5"
+      >
+        {
+          techItems.map((item) => (
+            <li class="contents">
+              <button
+                type="button"
+                title={item.skill}
+                class="skill-tile flex flex-col gap-2.5 rounded-xl border border-border/70 bg-surface p-3 text-left transition-colors hover:border-accent/60 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent aria-pressed:border-accent aria-pressed:bg-secondary/50"
+                aria-pressed="false"
+                data-id={item.id}
+                data-filters={item.category.join(",")}
+              >
+                <div class="flex items-center gap-2.5">
+                  <div class="w-9 h-9 shrink-0 bg-white rounded-lg p-1.5 flex items-center justify-center">
+                    <img
+                      src={`/svgs/${item.icon}.svg`}
+                      alt=""
+                      class="w-full h-full object-contain"
+                      loading="lazy"
+                    />
+                  </div>
+                  <div class="min-w-0">
+                    <h4 class="m-0 text-text text-sm font-semibold truncate">
+                      {item.skill}
+                    </h4>
+                    <p class={`m-0 mt-0.5 flex items-center gap-1.5 text-xs capitalize ${statusText[item.status]}`}>
+                      <span class={`w-1.5 h-1.5 rounded-full ${statusDot[item.status]}`} aria-hidden="true" />
+                      {item.status}
+                    </p>
+                  </div>
+                </div>
+                <div class="h-1 rounded-full bg-tertiary/40 overflow-hidden" aria-hidden="true">
+                  <div class="h-full rounded-full bg-accent/80" style={`width: ${item.level * 10}%`} />
+                </div>
+              </button>
+            </li>
+          ))
+        }
+      </ul>
+    </section>
+  </div>
+
+  <!-- Backdrop (solo móvil) -->
+  <div
+    id="detailBackdrop"
+    data-open="false"
+    class="fixed inset-0 z-[55] bg-black/60 opacity-0 pointer-events-none transition-opacity duration-300 data-[open=true]:opacity-100 data-[open=true]:pointer-events-auto lg:hidden"
+  >
+  </div>
+
+  <!-- Panel de detalle: bottom sheet en móvil, sidebar fijo en escritorio -->
+  <aside
+    id="detailPanel"
+    data-open="false"
+    aria-label="Skill details"
+    class="fixed top-0 right-0 bottom-0 z-[60] w-[min(92vw,420px)] translate-x-full overflow-y-auto border-l border-border/70 bg-primary shadow-2xl transition-transform duration-300 data-[open=true]:translate-x-0 lg:sticky lg:top-[var(--header-h,6rem)] lg:right-auto lg:bottom-auto lg:z-auto lg:h-[calc(100dvh_-_var(--header-h,6rem))] lg:w-auto lg:translate-x-0 lg:self-start lg:shadow-none"
+  >
+    <!-- Estado vacío -->
+    <div
+      id="emptyPanel"
+      class="max-lg:hidden flex lg:h-full flex-col items-center justify-center gap-6 p-8 text-center"
+    >
+      <div class="relative w-36 h-36 flex items-center justify-center" aria-hidden="true">
+        <span class="ring absolute inset-0 rounded-full border border-accent"></span>
+        <span class="ring absolute inset-0 rounded-full border border-accent"></span>
+        <span class="ring absolute inset-0 rounded-full border border-accent"></span>
+        <span class="relative flex w-14 h-14 items-center justify-center rounded-full border border-accent/60 bg-secondary/60 text-accent">
+          <svg class="w-6 h-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+            <path d="m4 4 7.07 16.97 2.51-7.39 7.39-2.51L4 4z"></path>
+          </svg>
+        </span>
+      </div>
+      <div>
+        <p class="m-0 text-text text-lg font-semibold">Select a skill</p>
+        <p class="m-0 mt-1.5 text-sm text-text-muted leading-relaxed max-w-[26ch] mx-auto">
+          Pick one from the list to see how I use it and what it connects to.
+        </p>
+      </div>
+    </div>
+
+    <!-- Detalle -->
+    <div id="detailWrap" hidden>
+      <div class="flex justify-end px-3 pt-3">
+        <button
+          type="button"
+          id="closeDetail"
+          class="flex h-8 w-8 items-center justify-center rounded-full text-text-muted transition-colors hover:text-text hover:bg-tertiary/40 focus-visible:outline-2 focus-visible:outline-accent"
+          aria-label="Close details"
+        >
+          <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true">
+            <path d="M18 6 6 18M6 6l12 12"></path>
+          </svg>
+        </button>
+      </div>
+      <div id="detailBody" aria-live="polite"></div>
+    </div>
+  </aside>
+</div>
+
+<!-- Una plantilla de detalle por skill; el script solo la clona -->
+{
+  items.map((item) => (
+    <template id={`detail-${item.id}`}>
+      <div class="flex flex-col gap-6 px-6 pb-7 pt-1">
+        <div class="flex items-center gap-4">
+          <div class="w-16 h-16 shrink-0 bg-white rounded-xl p-2 flex items-center justify-center">
+            <img src={`/svgs/${item.icon}.svg`} alt="" class="w-full h-full object-contain" />
+          </div>
+          <div class="min-w-0">
+            <h4 class="m-0 text-text text-2xl font-bold leading-tight">{item.skill}</h4>
+            <div class="mt-1.5 flex flex-wrap items-center gap-2">
+              <span class={`flex items-center gap-1.5 text-sm capitalize ${statusText[item.status]}`}>
+                <span class={`w-1.5 h-1.5 rounded-full ${statusDot[item.status]}`} aria-hidden="true" />
+                {item.status}
+              </span>
+              {item.focus && (
+                <span class="rounded-full bg-success/15 px-2 py-0.5 text-xs text-success">
+                  Current focus
+                </span>
+              )}
+            </div>
+          </div>
+        </div>
+
+        <div>
+          <div class="flex items-baseline justify-between text-sm">
+            <span class="text-text-muted">Level</span>
+            <span class="text-text font-medium">{item.level} of 10</span>
+          </div>
+          <div class="mt-2 flex gap-1" role="img" aria-label={`Level ${item.level} of 10`}>
+            {Array.from({ length: 10 }).map((_, n) => (
+              <span class={`h-2 flex-1 rounded-sm ${n < item.level ? "bg-accent" : "bg-tertiary/40"}`} />
+            ))}
+          </div>
+        </div>
+
+        <p class="m-0 text-text-muted text-[0.95rem] leading-relaxed">{item.description}</p>
+
+        <div>
+          <h5 class="m-0 mb-2 text-sm font-semibold text-text">Areas</h5>
+          <div class="flex flex-wrap gap-1.5">
+            {item.category.map((cat) => (
+              <span class="rounded-md bg-tertiary/50 px-2 py-0.5 text-xs text-text capitalize">{cat}</span>
+            ))}
+          </div>
+        </div>
+
+        {relatedTo(item).length > 0 && (
+          <div>
+            <h5 class="m-0 mb-2 text-sm font-semibold text-text">Related skills</h5>
+            <ul class="m-0 p-0 list-none flex flex-col gap-1.5">
+              {relatedTo(item).map((r) => (
+                <li>
+                  <button
+                    type="button"
+                    data-select={r.id}
+                    class="flex w-full items-center gap-3 rounded-lg border border-border/60 px-3 py-2 text-left transition-colors hover:border-accent/60 focus-visible:outline-2 focus-visible:outline-accent"
+                  >
+                    <span class="w-7 h-7 shrink-0 bg-white rounded-md p-1 flex items-center justify-center">
+                      <img src={`/svgs/${r.icon}.svg`} alt="" class="w-full h-full object-contain" />
+                    </span>
+                    <span class="min-w-0 flex-1 truncate text-sm text-text">{r.skill}</span>
+                    <span class="text-xs text-text-muted">{r.level}/10</span>
+                  </button>
+                </li>
+              ))}
+            </ul>
+          </div>
+        )}
+      </div>
+    </template>
+  ))
+}
+
+<script>
+  // Todas las tarjetas seleccionables (Current focus + Technical skills)
+  const tiles = Array.from(document.querySelectorAll<HTMLButtonElement>(".skill-tile"));
+  // Solo las técnicas se filtran
+  const filterable = Array.from(document.querySelectorAll<HTMLButtonElement>("#skillsList .skill-tile"));
+  const chips = Array.from(document.querySelectorAll<HTMLButtonElement>("#filterBar [data-filter]"));
+  const panel = document.getElementById("detailPanel") as HTMLElement;
+  const backdrop = document.getElementById("detailBackdrop") as HTMLElement;
+  const emptyPanel = document.getElementById("emptyPanel") as HTMLElement;
+  const wrap = document.getElementById("detailWrap") as HTMLElement;
+  const body = document.getElementById("detailBody") as HTMLElement;
+  const closeBtn = document.getElementById("closeDetail") as HTMLButtonElement;
+  const desktop = window.matchMedia("(min-width: 1024px)");
+
+  let lastTile: HTMLButtonElement | null = null;
+
+  // El header del layout es sticky: medimos su altura real para que el sidebar
+  // se pegue justo debajo y nunca quede tapado (también si cambia al redimensionar).
+  const header = document.querySelector("header");
+  if (header) {
+    const syncHeaderHeight = () =>
+      document.documentElement.style.setProperty(
+        "--header-h",
+        `${Math.ceil(header.getBoundingClientRect().height)}px`,
+      );
+    syncHeaderHeight();
+    new ResizeObserver(syncHeaderHeight).observe(header);
+  }
+
+  function setFilter(value: string) {
+    chips.forEach((c) => c.setAttribute("aria-pressed", String(c.dataset.filter === value)));
+    filterable.forEach((t) => {
+      const list = (t.dataset.filters ?? "").split(",");
+      t.hidden = !(value === "all" || list.includes(value));
     });
   }
 
-  (window as any).toggleSkill = toggleSkill;
-  (window as any).sortSkills = sortSkills;
-  (window as any).filterByCategory = filterByCategory;
+  function select(id: string) {
+    const tpl = document.getElementById(`detail-${id}`) as HTMLTemplateElement | null;
+    const tile = tiles.find((t) => t.dataset.id === id);
+    if (!tpl || !tile) return;
 
-  document.addEventListener("DOMContentLoaded", () => {
-    sortSkills("level");
+    // Si viene desde "Related skills" y está oculta por el filtro, mostramos todo
+    if (tile.hidden) setFilter("all");
+
+    lastTile = tile;
+    tiles.forEach((t) => t.setAttribute("aria-pressed", String(t === tile)));
+
+    body.replaceChildren(tpl.content.cloneNode(true));
+    body.classList.remove("detail-in");
+    void body.offsetWidth; // reinicia la animación
+    body.classList.add("detail-in");
+    panel.scrollTop = 0;
+
+    emptyPanel.hidden = true;
+    wrap.hidden = false;
+    panel.dataset.open = "true";
+    backdrop.dataset.open = "true";
+
+    if (!desktop.matches) {
+      document.documentElement.classList.add("overflow-hidden");
+      closeBtn.focus();
+    }
+  }
+
+  function clear() {
+    tiles.forEach((t) => t.setAttribute("aria-pressed", "false"));
+    body.replaceChildren();
+    wrap.hidden = true;
+    emptyPanel.hidden = false;
+    panel.dataset.open = "false";
+    backdrop.dataset.open = "false";
+    document.documentElement.classList.remove("overflow-hidden");
+    if (!desktop.matches) lastTile?.focus();
+  }
+
+  tiles.forEach((tile) =>
+    tile.addEventListener("click", () => select(tile.dataset.id ?? "")),
+  );
+  chips.forEach((chip) =>
+    chip.addEventListener("click", () => setFilter(chip.dataset.filter ?? "all")),
+  );
+  panel.addEventListener("click", (e) => {
+    const related = (e.target as HTMLElement).closest<HTMLElement>("[data-select]");
+    if (related?.dataset.select) select(related.dataset.select);
+  });
+  closeBtn.addEventListener("click", clear);
+  backdrop.addEventListener("click", clear);
+  document.addEventListener("keydown", (e) => {
+    if (e.key === "Escape" && !wrap.hidden) clear();
+  });
+
+  // Al pasar de móvil a escritorio con el sheet abierto, soltamos el bloqueo de scroll
+  desktop.addEventListener("change", () => {
+    if (desktop.matches) document.documentElement.classList.remove("overflow-hidden");
   });
 </script>

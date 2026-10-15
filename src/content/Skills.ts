@@ -1,9 +1,15 @@
-export interface Skills {
+export const CATEGORIES = ['frontend', 'backend', 'devops', 'database', 'architecture', 'tools', 'IA', 'mobile'] as const;
+export const STATUSES = ['learning', 'proficient', 'expert'] as const;
+
+export type Category = (typeof CATEGORIES)[number];
+export type Status = (typeof STATUSES)[number];
+
+export interface Skill {
     skill: string;
-    level: number; // Level from 1 to 10
+    level: number; // 1 to 10
     description: string;
-    status: 'learning' | 'proficient' | 'expert';
-    category: Array<'frontend' | 'backend' | 'devops' | 'database' | 'architecture' | 'tools' | 'IA'>;
+    status: Status;
+    category: readonly Category[]; // readonly: las tuplas de `as const` lo son
     icon: string;
 }
 
@@ -263,5 +269,37 @@ export const skills = [
         status: 'learning',
         category: ['backend'],
         icon: 'springboot'
+    },
+    {
+        skill: 'Android',
+        level: 5,
+        description: 'I learned Android development to make my own apps and make apps for companies. Using Kotlin and Jetpack Compose with some populars libraries like Retrofit and Room',
+        status: 'learning',
+        category: ['mobile'],
+        icon: 'android'
+    },
+    {
+        skill: 'MongoDB',
+        level: 8,
+        description: 'I have used MongoDB for personal and real projects. I like it because it\'s a NoSQL database that allows for flexible data modeling and scalability. I have experience with its features like aggregation and indexing.',
+        status: 'proficient',
+        category: ['database'],
+        icon: 'mongodb'
+    },
+    {
+        skill: 'Redis',
+        level: 8,
+        description: 'Have used Redis for personal and real projects. Use for implementations of caching implementations with Laravel and Node.',
+        status: 'proficient',
+        category: ['database'],
+        icon: 'redis'
+    },
+    {
+        skill: 'nginx',
+        level: 6,
+        description: 'Experience configuring nginx to make reverse proxy or balancing traffic in real projects, implementation with docker for easy deployment',
+        status: 'proficient',
+        category: ['devops'],
+        icon: 'nginx'
     }
 ] as const;

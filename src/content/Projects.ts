@@ -13,7 +13,12 @@ export const projects: Project[] = [
     {
         title: 'Scalable OAuth2 Backend API',
         description: 'A scalable backend API built for my employer and secured with OAuth2. Designed as a modular monolith to enable horizontal scaling, reduce infrastructure costs, and improve overall performance and maintainability.',
-        tags: ['Laravel', 'Docker', 'MySQL', 'Modular Architecture', 'Git', 'Kanban', 'Cloud VPS', 'Tests', 'GitLab']
+        tags: ['Laravel', 'Docker', 'MySQL', 'Modular Architecture', 'Git', 'Kanban', 'Cloud VPS', 'Tests', 'GitLab', 'Redis', 'MongoDB', 'nginx']
+    },
+    {
+        title: 'Call Guard',
+        description: 'My first Android application, for blocking unwanted calls. I developed it because I dont like to receive calls from unknown numbers so I created this app to block them in android devices. It was my first experience with Android development and I learned a lot about mobile app development, user interface design, and the Android ecosystem. If you want to try it, [download the APK from GitHub](https://github.com/Sebastian-IngSoftware/CallGuard/releases/tag/v1.0.0).',
+        tags: ['Android', 'Git', 'GitHub']
     },
     {
         title: 'Employee Training & Certification Platform',
