@@ -17,7 +17,7 @@ export const projects: Project[] = [
     },
     {
         title: 'Call Guard',
-        description: 'My first Android application, for blocking unwanted calls. I developed it because I dont like to receive calls from unknown numbers so I created this app to block them in android devices. It was my first experience with Android development and I learned a lot about mobile app development, user interface design, and the Android ecosystem. If you want to try it, [download the APK from GitHub](https://github.com/Sebastian-IngSoftware/CallGuard/releases/tag/v1.0.0).',
+        description: 'My first Android application, for blocking unwanted calls. I developed it because I dont like to receive calls from unknown numbers so I created this app to block them in android devices. It was my first experience with Android development and I learned a lot about mobile app development, user interface design, and the Android ecosystem. [You can download the APK from my GitHub](https://github.com/Sebastian-IngSoftware/CallGuard/releases/tag/v1.0.0).',
         tags: ['Android', 'Git', 'GitHub']
     },
     {
